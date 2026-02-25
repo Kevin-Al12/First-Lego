@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Juego Educativo - Guardianes del Pasado</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -95,42 +95,62 @@
             gap: 1.2rem; max-width: 600px; margin: 2.5rem auto;
         }
         .memory-card {
-            aspect-ratio: 1; background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
-            border: 3px solid var(--verde-medio); border-radius: 15px;
-            cursor: pointer; display: flex; align-items: center;
-            justify-content: center; font-size: 3rem;
-            transition: all 0.3s; position: relative; box-shadow: 0 3px 12px rgba(45, 80, 22, 0.3);
+            aspect-ratio: 1; 
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+            border: 3px solid var(--verde-medio); 
+            border-radius: 15px;
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            font-size: 3rem;
+            transition: transform 0.2s, box-shadow 0.2s; 
+            position: relative; 
+            box-shadow: 0 3px 12px rgba(45, 80, 22, 0.3);
+            transform: scale(1);
         }
         .memory-card:hover:not(.flipped):not(.matched) {
-            transform: scale(1.05); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.4);
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(45, 80, 22, 0.4);
         }
         .memory-card.flipped, .memory-card.matched {
-            background: white; border-color: var(--dorado);
+            background: white; 
+            border-color: var(--dorado);
+            transform: scale(1);
         }
         .memory-card.matched {
-            border-color: #27ae60; background: #e8f5e9;
-            animation: pulse 0.5s ease-in-out;
+            border-color: #27ae60; 
+            background: #e8f5e9;
+            animation: pulse 0.4s ease-in-out;
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
         }
         .memory-card .card-front {
-            display: none; text-align: center;
+            display: none; 
+            text-align: center;
         }
         .memory-card.flipped .card-front,
         .memory-card.matched .card-front {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .memory-card .card-back {
-            color: white; font-size: 2.8rem;
+            color: white; 
+            font-size: 2.8rem;
         }
         .memory-card.flipped .card-back,
         .memory-card.matched .card-back {
             display: none;
         }
         .card-label {
-            font-size: 0.9rem; font-weight: 600; margin-top: 0.4rem;
+            font-size: 0.9rem; 
+            font-weight: 600; 
+            margin-top: 0.4rem;
             color: var(--marron-oscuro);
         }
         .game-controls {
@@ -154,9 +174,14 @@
             background: var(--marron-claro);
         }
         .victory-message {
-            display: none; background: linear-gradient(135deg, var(--verde-medio), var(--verde-oscuro));
-            color: white; padding: 2.5rem; border-radius: 18px;
-            text-align: center; margin-top: 1.8rem; animation: fadeIn 0.5s;
+            display: none; 
+            background: linear-gradient(135deg, var(--verde-medio), var(--verde-oscuro));
+            color: white; 
+            padding: 2rem; 
+            border-radius: 18px;
+            text-align: center; 
+            margin-top: 1.8rem; 
+            animation: fadeIn 0.5s;
         }
         .victory-message.show {
             display: block;
@@ -166,11 +191,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .victory-message h3 {
-            font-family: 'Merriweather', serif; font-size: 2.2rem;
+            font-family: 'Merriweather', serif; font-size: 2rem;
             color: var(--dorado); margin-bottom: 0.8rem;
         }
         .victory-message p {
-            font-size: 1.2rem; margin: 0.4rem 0;
+            font-size: 1.1rem; margin: 0.4rem 0;
         }
         .fun-facts {
             background: var(--crema-claro); padding: 2.5rem;
@@ -204,9 +229,57 @@
             color: var(--dorado); margin-bottom: 0.8rem; font-style: italic;
         }
         .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
+        
         @media (max-width: 768px) {
-            nav ul { flex-direction: column; gap: 0.6rem; }
-            .memory-grid { grid-template-columns: repeat(3, 1fr); }
+            nav ul { 
+                flex-direction: column; 
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            .page-hero h1 { font-size: 2rem; }
+            .page-hero p { font-size: 1rem; }
+            .game-section {
+                padding: 1.5rem;
+            }
+            .memory-grid { 
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+                max-width: 100%;
+            }
+            .memory-card {
+                font-size: 2.2rem;
+                border-width: 2px;
+            }
+            .memory-card .card-back {
+                font-size: 2rem;
+            }
+            .card-label {
+                font-size: 0.75rem;
+                margin-top: 0.2rem;
+            }
+            .stat-value {
+                font-size: 2rem;
+            }
+            .game-btn {
+                padding: 0.9rem 2rem;
+                font-size: 1rem;
+                width: 100%;
+            }
+            .victory-message {
+                padding: 1.5rem;
+            }
+            .victory-message h3 {
+                font-size: 1.6rem;
+            }
+            .victory-message p {
+                font-size: 1rem;
+            }
+            .fun-facts {
+                padding: 1.5rem;
+            }
+            .fact-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -230,7 +303,7 @@
     </header>
 
     <div class="page-hero">
-        <h1> Juego Educativo</h1>
+        <h1>🎮 Juego Educativo</h1>
         <p>Aprende sobre los gases tóxicos mientras te diviertes</p>
     </div>
 
@@ -249,7 +322,7 @@
 
             <div class="game-stats">
                 <div class="stat">
-                    <div class="stat-label">PAREJAS ENCONTRADAS</div>
+                    <div class="stat-label">PAREJAS</div>
                     <div class="stat-value" id="matches">0 / 6</div>
                 </div>
                 <div class="stat">
@@ -265,16 +338,16 @@
             <div class="memory-grid" id="memory-grid"></div>
 
             <div class="game-controls">
-                <button class="game-btn reset" onclick="resetMemoryGame()">🔄 NUEVA PARTIDA</button>
-                <button class="game-btn" onclick="window.location.href='mapa.html'">🗺️ VER MAPA</button>
+                <button class="game-btn reset" onclick="resetMemoryGame()">NUEVA PARTIDA</button>
+                <button class="game-btn" onclick="window.location.href='mapa.html'">VER MAPA</button>
             </div>
 
             <div class="victory-message" id="victory-message">
                 <h3>¡🎉 FELICITACIONES! 🎉</h3>
-                <p><strong>Has completado el juego exitosamente</strong></p>
+                <p><strong>Has completado el juego</strong></p>
                 <p id="victory-stats"></p>
                 <p style="margin-top: 1.2rem; font-size: 1rem;">
-                    Ahora conoces los gases que el ArqueoBot Guard detecta para proteger vidas.
+                    Ahora conoces los gases que el ArqueoBot detecta.
                 </p>
             </div>
         </div>
@@ -335,13 +408,13 @@
 
     <footer>
         <div class="footer-content">
-            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <h3>"La tecnología protege a quienes estudian nuestro pasado"</h3>
             <p><strong>Equipo Guardianes del Pasado</strong></p>
             <p>Club de Robótica | Politécnico ITLA</p>
             <p>FIRST LEGO League Challenge 2024</p>
             <p>Boca Chica, República Dominicana 🇩🇴</p>
             <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(244, 228, 193, 0.3); font-size: 0.75rem; opacity: 0.7;">
-                © 2024 Guardianes del Pasado. Todos los derechos reservados.
+                © 2024 Guardianes del Pasado
             </div>
         </div>
     </footer>
@@ -378,7 +451,7 @@
                 cardEl.dataset.id = card.id;
                 cardEl.dataset.uniqueid = card.uniqueId;
                 cardEl.innerHTML = `
-                    <div class="card-back">🤖</div>
+                    <div class="card-back"></div>
                     <div class="card-front">
                         <div>${card.emoji}</div>
                         <div class="card-label">${card.name}</div>
@@ -448,11 +521,10 @@
                 const victoryMsg = document.getElementById('victory-message');
                 const stats = document.getElementById('victory-stats');
                 stats.innerHTML = `
-                    <strong>⏱️ Tiempo:</strong> ${gameTime} segundos<br>
+                    <strong>⏱️ Tiempo:</strong> ${gameTime} segundos | 
                     <strong>🔄 Movimientos:</strong> ${moves}
                 `;
                 victoryMsg.classList.add('show');
-                
                 victoryMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 500);
         }
@@ -479,3 +551,4 @@
     </script>
 </body>
 </html>
+
