@@ -31,6 +31,18 @@
             color: var(--dorado); font-weight: 900;
         }
         .logo p { color: var(--crema-claro); font-size: 0.7rem; }
+        
+        /* Menú hamburguesa para móvil */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dorado);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
         nav ul { list-style: none; display: flex; gap: 1.5rem; }
         nav a {
             color: var(--crema-claro); text-decoration: none; font-weight: 500;
@@ -42,6 +54,7 @@
             background: var(--dorado); transition: width 0.3s;
         }
         nav a:hover::after, nav a.active::after { width: 100%; }
+        
         .page-hero {
             background: linear-gradient(135deg, rgba(45, 80, 22, 0.92) 0%, rgba(110, 160, 67, 0.88) 100%);
             padding: 4rem 1.5rem; text-align: center; color: var(--blanco);
@@ -65,6 +78,10 @@
             color: var(--verde-oscuro); margin-bottom: 1.5rem;
             border-left: 5px solid var(--dorado); padding-left: 1rem;
         }
+        .section h3 {
+            font-family: 'Merriweather', serif; font-size: 1.5rem;
+            color: var(--marron-oscuro); margin: 2rem 0 1rem 0;
+        }
         .section p {
             font-size: 1rem; line-height: 1.7; color: var(--texto-oscuro); margin-bottom: 1rem;
         }
@@ -82,6 +99,12 @@
         }
         .warning-banner p { 
             font-size: 1rem; line-height: 1.7; color: var(--texto-oscuro);
+        }
+        
+        .historical-context {
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(232, 193, 124, 0.08));
+            padding: 2rem; border-radius: 12px; margin: 2rem 0;
+            border-left: 5px solid var(--verde-oscuro);
         }
         
         .data-grid {
@@ -207,12 +230,53 @@
         .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
         
         @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            
+            nav { 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav.active {
+                max-height: 400px;
+            }
+            
+            nav ul { 
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+            }
+            
+            nav li {
+                border-bottom: 1px solid rgba(244, 228, 193, 0.2);
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 0.95rem;
+            }
+            
+            nav a::after { display: none; }
+            
             .timeline::before { left: 15px; }
             .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {
                 text-align: left; padding: 0 0 0 3rem;
             }
             .timeline-dot { left: 15px; }
-            nav ul { flex-direction: column; gap: 0.6rem; }
+            
+            .page-hero h1 { font-size: 2rem; }
+            .page-hero p { font-size: 1rem; }
+            
+            .section { padding: 1.5rem; }
+            .section h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -223,7 +287,8 @@
                 <h1>GUARDIANES DEL PASADO</h1>
                 <p>Club de Robótica Politécnico ITLA</p>
             </div>
-            <nav>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav id="nav-menu">
                 <ul>
                     <li><a href="index.html">INICIO</a></li>
                     <li><a href="proyecto.html" class="active">PROYECTO</a></li>
@@ -237,17 +302,17 @@
 
     <div class="page-hero">
         <h1>Nuestro Proyecto</h1>
-        <p>Problemática, fundamentación científica y el origen de nuestra solución</p>
+        <p>Problemática, contexto histórico y fundamentación científica</p>
     </div>
 
     <div class="container">
-        <!-- 1. PROBLEMÁTICA -->
+        <!-- PROBLEMÁTICA ACTUAL -->
         <section class="section">
-            <h2>La Problemática</h2>
+            <h2>La Problemática Actual</h2>
             <p>
                 Los yacimientos arqueológicos taínos de La Caleta en Boca Chica y otras ubicaciones arqueológicas y mineras 
                 de República Dominicana representan un patrimonio cultural invaluable. Sin embargo, <strong>arqueólogos, 
-                y profesionales en el area</strong> que trabajan en estas excavaciones enfrentan un peligro invisible pero letal: 
+                estudiantes y voluntarios</strong> que trabajan en estas excavaciones enfrentan un peligro invisible pero letal: 
                 la exposición a gases tóxicos acumulados en espacios confinados.
             </p>
             
@@ -266,9 +331,127 @@
                 amoníaco (NH₃) y dióxido de azufre (SO₂). <strong>La falta de detección temprana ha resultado 
                 en accidentes, intoxicaciones y muertes prevenibles a nivel mundial.</strong>
             </p>
+            
+            <h3>¿Por Qué Ocurren en las Excavaciones?</h3>
+            <p>
+                La presencia de gases tóxicos en yacimientos arqueológicos y mineros no es casualidad. Es el resultado 
+                de procesos naturales que han estado ocurriendo durante décadas, siglos o incluso milenios:
+            </p>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <h4>🕳️ Espacios Confinados sin Ventilación</h4>
+                    <p>
+                        Las cavernas, túneles y tumbas selladas carecen de circulación de aire. Sin ventilación natural, 
+                        los gases se acumulan hasta alcanzar concentraciones letales. En La Caleta, algunas cavernas 
+                        submarinas han estado cerradas por más de 500 años.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>🌍 Descomposición Orgánica Ancestral</h4>
+                    <p>
+                        Restos humanos, ofrendas orgánicas, madera, textiles y otros materiales taínos se descomponen 
+                        lentamente liberando CH₄ (metano) y CO₂ (dióxido de carbono) de forma continua durante siglos.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>⚗️ Reacciones Geoquímicas</h4>
+                    <p>
+                        Minerales como pirita (FeS₂) reaccionan con agua subterránea y oxígeno para producir H₂S 
+                        (sulfuro de hidrógeno) y ácido sulfúrico. En zonas mineras, estas reacciones nunca se detienen.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>🦠 Actividad Microbiana</h4>
+                    <p>
+                        Bacterias anaeróbicas (que no necesitan oxígeno) prosperan en estos ambientes cerrados, 
+                        produciendo gases como NH₃ (amoníaco) y CH₄ como subproductos de su metabolismo.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>⏱️ Exposición Prolongada del Personal</h4>
+                    <p>
+                        Los arqueólogos pueden pasar 6-8 horas diarias durante semanas en un mismo sitio. 
+                        Incluso niveles "bajos" de gases se vuelven peligrosos con exposición acumulativa.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>🌡️ Condiciones Tropicales Agravantes</h4>
+                    <p>
+                        El calor y humedad del Caribe aceleran todos estos procesos químicos y biológicos, 
+                        aumentando la velocidad de generación de gases tóxicos en comparación con climas templados.
+                    </p>
+                </div>
+            </div>
         </section>
 
-        <!-- 2. GASES TÓXICOS -->
+        <!-- CONTEXTO HISTÓRICO -->
+        <section class="section">
+            <h2>Contexto Histórico de la Problemática</h2>
+            
+            <div class="historical-context">
+                <h3>Una Historia de Descubrimientos y Tragedias</h3>
+                <p>
+                    Desde los inicios de la arqueología moderna en el siglo XIX, <strong>la exploración de cavernas, 
+                    tumbas y yacimientos subterráneos ha cobrado vidas de manera silenciosa</strong>. Los primeros 
+                    arqueólogos que exploraron las pirámides de Egipto, las catacumbas romanas y los cenotes mayas 
+                    desconocían los peligros invisibles que acechaban en estos espacios confinados.
+                </p>
+            </div>
+            
+            <p>
+                En 1922, cuando Howard Carter descubrió la tumba de Tutankamón, varios miembros de su equipo 
+                <strong>sufrieron síntomas inexplicables de mareos y dificultad respiratoria</strong> que se atribuyeron 
+                erróneamente a una "maldición". Décadas después, estudios científicos revelaron que la verdadera causa 
+                era la <strong>acumulación de gases tóxicos como CO₂ y NH₃</strong> producidos por la descomposición 
+                de materiales orgánicos en un espacio sellado durante milenios.
+            </p>
+            
+            <p>
+                En República Dominicana, la situación es particularmente crítica debido a:
+            </p>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <h4>🏛️ Riqueza Arqueológica Taína</h4>
+                    <p>
+                        Más de 15 yacimientos arqueológicos importantes con cavernas ceremoniales y enterramientos 
+                        que conservan gases acumulados durante siglos.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>⛏️ Historia Minera</h4>
+                    <p>
+                        La minería del oro data desde la época colonial (1492), dejando túneles abandonados que 
+                        generan gases peligrosos por reacciones químicas continuas.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>🌡️ Clima Tropical</h4>
+                    <p>
+                        Las altas temperaturas y humedad aceleran procesos de descomposición orgánica y reacciones 
+                        químicas, intensificando la producción de gases tóxicos.
+                    </p>
+                </div>
+                
+                <div class="data-card">
+                    <h4>📚 Falta de Protocolos</h4>
+                    <p>
+                        Históricamente, la arqueología dominicana ha carecido de protocolos estandarizados de 
+                        seguridad para detección de gases en excavaciones.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GASES TÓXICOS -->
         <section class="section">
             <h2>Gases Tóxicos Identificados</h2>
             <div class="gases-grid">
@@ -360,13 +543,13 @@
             </div>
         </div>
 
-        <!-- 3. FUNDAMENTACIÓN -->
+        <!-- FUNDAMENTACIÓN -->
         <section class="section">
             <h2>Fundamentación Científica</h2>
             
             <div class="data-grid">
                 <div class="data-card">
-                    <h4>Datos de la OMS</h4>
+                    <h4>📊 Datos de la OMS</h4>
                     <p>
                         La Organización Mundial de la Salud reporta que <strong>espacios confinados sin ventilación adecuada 
                         son responsables de miles de muertes anuales</strong> por intoxicación con gases tóxicos a nivel mundial.
@@ -374,7 +557,7 @@
                 </div>
 
                 <div class="data-card">
-                    <h4>Estudios de Seguridad Industrial</h4>
+                    <h4>🔬 Estudios de Seguridad Industrial</h4>
                     <p>
                         Según NIOSH (Instituto Nacional para la Seguridad y Salud Ocupacional), <strong>el 60% de las muertes 
                         en espacios confinados podrían prevenirse</strong> con sistemas de detección temprana de gases.
@@ -382,7 +565,7 @@
                 </div>
 
                 <div class="data-card">
-                    <h4>Investigación en Arqueología</h4>
+                    <h4>⚗️ Investigación en Arqueología</h4>
                     <p>
                         Estudios publicados en el Journal of Archaeological Science documentan <strong>múltiples casos de 
                         intoxicación por CO₂ y H₂S</strong> en excavaciones de cavernas y sitios arqueológicos cerrados.
@@ -390,30 +573,16 @@
                 </div>
 
                 <div class="data-card">
-                    <h4>Contexto Dominicano</h4>
+                    <h4>🇩🇴 Contexto Dominicano</h4>
                     <p>
                         República Dominicana posee <strong>más de 15 sitios arqueológicos taínos importantes</strong> y 
                         8 zonas mineras activas donde la detección de gases es crítica para la seguridad de los trabajadores.
                     </p>
                 </div>
             </div>
-
-            <p style="margin-top: 2rem;">
-                <strong>¿Por qué ocurre en excavaciones?</strong>
-            </p>
-            <p>
-                <strong>Espacios Confinados:</strong> Las cavernas y túneles excavados tienen poca ventilación, 
-                permitiendo que los gases se acumulen en concentraciones letales.<br><br>
-                <strong>Descomposición Orgánica:</strong> Materia orgánica antigua se descompone liberando 
-                metano y dióxido de carbono continuamente.<br><br>
-                <strong>Reacciones Químicas:</strong> Minerales y sedimentos reaccionan con agua subterránea 
-                produciendo gases peligrosos.<br><br>
-                <strong>Exposición Prolongada:</strong> Los arqueólogos pasan horas en estos espacios, 
-                aumentando dramáticamente el riesgo de intoxicación.
-            </p>
         </section>
 
-        <!-- 4. LA SOLUCIÓN -->
+        <!-- LA SOLUCIÓN -->
         <section class="section">
             <h2>Nuestra Solución</h2>
             <p>
@@ -422,7 +591,7 @@
             
             <div class="data-grid" style="margin-top: 2rem;">
                 <div class="data-card" style="border-left-color: var(--marron-oscuro);">
-                    <h4>ArqueoBot Guard</h4>
+                    <h4>🤖 ArqueoBot Guard</h4>
                     <p>
                         Plataforma robótica móvil autónoma equipada con sensores MQ-2, MQ-7 y MQ-135 que <strong>explora 
                         áreas arqueológicas antes del ingreso de personal</strong>, detectando concentraciones peligrosas 
@@ -431,7 +600,7 @@
                 </div>
 
                 <div class="data-card" style="border-left-color: var(--verde-oscuro);">
-                    <h4> MaskArq Safe</h4>
+                    <h4>😷 MaskArq Safe</h4>
                     <p>
                         Máscara respiratoria avanzada con <strong>sistema de filtración de carbón activado</strong> e 
                         indicadores LED que proporciona protección personal continua durante las excavaciones, con alertas 
@@ -446,7 +615,7 @@
             </p>
         </section>
 
-        <!-- 5. CÓMO NACIÓ -->
+        <!-- CÓMO NACIÓ -->
         <section class="section">
             <h2>Cómo Nació la Idea</h2>
             <p>
@@ -465,7 +634,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h3>Descubrimiento del Problema</h3>
-                        <span class="timeline-date">Septiembre 2025</span>
+                        <span class="timeline-date">Septiembre 2024</span>
                         <p>
                             Visitamos los yacimientos arqueológicos de La Caleta y entrevistamos a arqueólogos 
                             que nos compartieron experiencias con mareos y malestar durante excavaciones.
@@ -477,7 +646,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h3>Investigación Científica</h3>
-                        <span class="timeline-date">Octubre 2025</span>
+                        <span class="timeline-date">Octubre 2024</span>
                         <p>
                             Consultamos literatura científica, hablamos con expertos en seguridad industrial 
                             y estudiamos los efectos de gases tóxicos en espacios confinados.
@@ -489,7 +658,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h3>Desarrollo de Prototipos</h3>
-                        <span class="timeline-date">Noviembre 2025</span>
+                        <span class="timeline-date">Noviembre 2024</span>
                         <p>
                             Diseñamos y construimos el ArqueoBot Guard con sensores MQ-2, MQ-135 y MQ-7, 
                             además de desarrollar el prototipo de la MaskArq Safe.
@@ -501,7 +670,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h3>Pruebas y Validación</h3>
-                        <span class="timeline-date">Diciembre 2025</span>
+                        <span class="timeline-date">Diciembre 2024</span>
                         <p>
                             Realizamos pruebas de campo, refinamos nuestros diseños y validamos la efectividad 
                             de nuestras soluciones con expertos en arqueología.
@@ -513,7 +682,7 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h3>Presentación FLL 2024</h3>
-                        <span class="timeline-date">Marzo 2025</span>
+                        <span class="timeline-date">Enero 2025</span>
                         <p>
                             Presentamos "Guardianes del Pasado" en FIRST LEGO League, compartiendo nuestra 
                             visión de una arqueología más segura en República Dominicana.
@@ -536,6 +705,22 @@
             </div>
         </div>
     </footer>
+    
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('active');
+        }
+        
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav-menu').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
