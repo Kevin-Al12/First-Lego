@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Exploración del Territorio - Guardianes del Pasado</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -82,7 +82,13 @@
             box-shadow: 0 10px 35px rgba(45, 80, 22, 0.2);
             border: 4px solid var(--marron-oscuro); position: relative;
         }
-        #map { height: 600px; width: 100%; }
+        #map { 
+            height: 600px; width: 100%;
+            touch-action: pan-x pan-y;
+        }
+        .leaflet-container {
+            font-family: 'Montserrat', sans-serif;
+        }
         .tour-modal {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
@@ -118,7 +124,7 @@
         }
         .tour-progress {
             position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95); padding: 1.2rem 1.8rem;
+            background: rgba(255, 255, 255, 0.98); padding: 1.2rem 1.8rem;
             border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1500; display: none; min-width: 350px;
         }
@@ -206,10 +212,77 @@
             color: var(--dorado); margin-bottom: 0.8rem; font-style: italic;
         }
         .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
+        
         @media (max-width: 768px) {
-            nav ul { flex-direction: column; gap: 0.6rem; }
-            #map { height: 450px; }
-            .tour-progress { min-width: auto; width: 90%; }
+            nav ul { 
+                flex-direction: column; 
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            #map { 
+                height: 500px !important;
+                min-height: 500px !important;
+            }
+            .tour-progress { 
+                min-width: auto;
+                width: 95%;
+                padding: 1rem;
+                bottom: 10px;
+            }
+            .tour-progress-header {
+                font-size: 1rem;
+            }
+            .tour-modal {
+                max-width: 90%;
+                width: 90%;
+                padding: 2rem 1.2rem;
+            }
+            .tour-modal h3 { 
+                font-size: 1.6rem;
+                margin-bottom: 1rem;
+            }
+            .tour-modal p { 
+                font-size: 0.95rem;
+                margin-bottom: 1.2rem;
+            }
+            .tour-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                display: block;
+                width: 100%;
+                margin: 0.4rem 0;
+            }
+            .tour-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .tour-control-btn {
+                width: 100%;
+                padding: 0.8rem;
+                font-size: 0.85rem;
+            }
+            .page-hero h1 { font-size: 2rem; }
+            .page-hero p { font-size: 1rem; }
+            .map-intro {
+                padding: 1.5rem;
+            }
+            .map-intro h2 { font-size: 1.5rem; }
+            .legend { 
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .legend-item { font-size: 0.8rem; }
+            .legend-icon { font-size: 1.5rem; }
+            .site-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .stat-box {
+                padding: 1.2rem;
+            }
+            .stat-box-number {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -234,16 +307,15 @@
 
     <div class="page-hero">
         <h1>Exploración del Territorio</h1>
-        <p>Sitios arqueológicos y mineros de República Dominicana que requieren protección</p>
+        <p>Sitios arqueológicos y mineros de República Dominicana</p>
     </div>
 
     <div class="container">
         <div class="map-intro">
-            <h2>Mapa Interactivo de República Dominicana</h2>
+            <h2>🗺️ Mapa Interactivo de República Dominicana</h2>
             <p>
                 Explora los principales <strong>sitios arqueológicos taínos</strong> y <strong>áreas mineras</strong> 
-                de nuestro país donde el ArqueoBot Guard y MaskArq Safe pueden salvar vidas. 
-                Haz clic en cada marcador para conocer los gases detectados y componentes químicos.
+                de nuestro país donde el ArqueoBot Guard y MaskArq Safe pueden salvar vidas.
             </p>
             
             <div class="legend">
@@ -257,7 +329,7 @@
                 </div>
                 <div class="legend-item">
                     <span class="legend-icon">⚠️</span>
-                    <span>Riesgo Alto de Gases</span>
+                    <span>Riesgo Alto</span>
                 </div>
             </div>
         </div>
@@ -265,15 +337,15 @@
         <div class="site-stats">
             <div class="stat-box">
                 <div class="stat-box-number">15+</div>
-                <div class="stat-box-label">Sitios Arqueológicos Identificados</div>
+                <div class="stat-box-label">Sitios Arqueológicos</div>
             </div>
             <div class="stat-box">
                 <div class="stat-box-number">8</div>
-                <div class="stat-box-label">Zonas Mineras Principales</div>
+                <div class="stat-box-label">Zonas Mineras</div>
             </div>
             <div class="stat-box">
                 <div class="stat-box-number">23</div>
-                <div class="stat-box-label">Ubicaciones de Alto Riesgo</div>
+                <div class="stat-box-label">Ubicaciones de Riesgo</div>
             </div>
         </div>
 
@@ -281,29 +353,22 @@
             <div id="map"></div>
             
             <div class="tour-modal" id="welcome-modal">
-                <h3>🗺️ ¡Bienvenido al Tour Virtual!</h3>
+                <h3>🗺️ ¡Bienvenido!</h3>
                 <p>
-                    Te llevaremos en un recorrido por las zonas mineras y sitios arqueológicos más importantes 
-                    de República Dominicana donde nuestras soluciones pueden salvar vidas.
-                </p>
-                <p style="font-size: 0.95rem; opacity: 0.9;">
-                    El tour te mostrará automáticamente cada ubicación con información detallada sobre gases tóxicos.
+                    Recorrido por las zonas mineras y sitios arqueológicos más importantes 
+                    de República Dominicana.
                 </p>
                 <button class="tour-btn tour-btn-primary" onclick="startTour()">🚀 Comenzar Tour</button>
-                <button class="tour-btn tour-btn-secondary" onclick="skipTour()">Explorar Libremente</button>
+                <button class="tour-btn tour-btn-secondary" onclick="skipTour()">Explorar Libre</button>
             </div>
 
             <div class="tour-modal" id="end-modal">
                 <h3>🎉 ¡Tour Completado!</h3>
                 <p>
-                    Has explorado todas las ubicaciones clave donde el ArqueoBot Guard y MaskArq Safe 
-                    son esenciales para la seguridad de arqueólogos y mineros.
+                    Has explorado todas las ubicaciones clave donde nuestras soluciones son esenciales.
                 </p>
-                <p style="font-size: 0.95rem; opacity: 0.9;">
-                    ¿Quieres volver a ver el tour o explorar libremente?
-                </p>
-                <button class="tour-btn tour-btn-primary" onclick="restartTour()">🔄 Reiniciar Tour</button>
-                <button class="tour-btn tour-btn-secondary" onclick="closeEndModal()">✓ Explorar Libremente</button>
+                <button class="tour-btn tour-btn-primary" onclick="restartTour()">🔄 Reiniciar</button>
+                <button class="tour-btn tour-btn-secondary" onclick="closeEndModal()">✓ Cerrar</button>
             </div>
 
             <div class="tour-progress" id="tour-progress">
@@ -322,21 +387,30 @@
 
     <footer>
         <div class="footer-content">
-            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <h3>"La tecnología protege a quienes estudian nuestro pasado"</h3>
             <p><strong>Equipo Guardianes del Pasado</strong></p>
             <p>Club de Robótica | Politécnico ITLA</p>
             <p>FIRST LEGO League Challenge 2024</p>
             <p>Boca Chica, República Dominicana 🇩🇴</p>
             <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(244, 228, 193, 0.3); font-size: 0.75rem; opacity: 0.7;">
-                © 2024 Guardianes del Pasado. Todos los derechos reservados.
+                © 2024 Guardianes del Pasado
             </div>
         </div>
     </footer>
 
     <script>
-        const map = L.map('map').setView([18.7357, -70.1627], 9);
+        const map = L.map('map', {
+            tap: true,
+            tapTolerance: 15,
+            dragging: true,
+            touchZoom: true,
+            scrollWheelZoom: false,
+            doubleClickZoom: true,
+            zoomControl: true
+        }).setView([18.7357, -70.1627], 9);
+        
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
+            attribution: '© OpenStreetMap',
             maxZoom: 18,
         }).addTo(map);
 
@@ -357,144 +431,25 @@
         });
 
         const tourStops = [
-            {
-                coords: [19.0347, -71.4394],
-                type: 'mining',
-                name: 'Minas de Pueblo Viejo',
-                description: 'Una de las minas de oro más grandes del mundo. Operaciones subterráneas extensas con túneles profundos.',
-                risk: 'EXTREMO - H₂S, CH₄, CO en altas concentraciones',
-                gases: ['H₂S', 'CH₄', 'CO', 'CO₂']
-            },
-            {
-                coords: [18.9500, -71.2500],
-                type: 'mining',
-                name: 'Minas de Cerro de Maimón',
-                description: 'Explotación de cobre y oro. Túneles profundos con ventilación controlada.',
-                risk: 'ALTO - Gases industriales y metano',
-                gases: ['CH₄', 'CO₂', 'SO₂']
-            },
-            {
-                coords: [18.5000, -70.6667],
-                type: 'mining',
-                name: 'Minas de Los Cacaos',
-                description: 'Antiguas minas de oro con túneles abandonados que generan gases peligrosos.',
-                risk: 'EXTREMO - Túneles sin ventilación activa',
-                gases: ['CH₄', 'CO₂', 'H₂S', 'CO']
-            },
-            {
-                coords: [19.6500, -70.8000],
-                type: 'mining',
-                name: 'Minas de Cotuy',
-                description: 'Zona minera histórica con extracción de oro. Muchos túneles antiguos aún accesibles.',
-                risk: 'ALTO - Concentraciones variables de gases',
-                gases: ['CH₄', 'CO₂', 'CO']
-            },
-            {
-                coords: [18.8000, -71.5000],
-                type: 'mining',
-                name: 'Minas de Las Lagunas',
-                description: 'Operaciones de minería artesanal con túneles sin regulación adecuada.',
-                risk: 'EXTREMO - Sin sistemas de detección de gases',
-                gases: ['CH₄', 'CO₂', 'H₂S']
-            },
-            {
-                coords: [18.4000, -69.5000],
-                type: 'mining',
-                name: 'Canteras de Piedra Caliza',
-                description: 'Extracción de materiales de construcción. Espacios cerrados con poca circulación de aire.',
-                risk: 'MEDIO - CO₂ por descomposición de carbonatos',
-                gases: ['CO₂']
-            },
-            {
-                coords: [19.5000, -70.5000],
-                type: 'mining',
-                name: 'Minas de Ámbar - Puerto Plata',
-                description: 'Extracción de ámbar dominicano. Túneles estrechos en montañas.',
-                risk: 'MEDIO - Espacios confinados con ventilación limitada',
-                gases: ['CO₂', 'CH₄']
-            },
-            {
-                coords: [18.6000, -69.8000],
-                type: 'mining',
-                name: 'Minas de Larimar - Barahona',
-                description: 'Única fuente mundial de larimar. Túneles subterráneos en zonas montañosas.',
-                risk: 'ALTO - Gases volcánicos residuales posibles',
-                gases: ['SO₂', 'CO₂', 'H₂S']
-            },
-            {
-                coords: [18.4242, -69.6706],
-                type: 'archaeological',
-                name: 'Yacimiento de La Caleta',
-                description: 'Uno de los sitios arqueológicos taínos más importantes de República Dominicana.',
-                risk: 'ALTO - Cavernas submarinas con concentraciones de CO₂ y CH₄',
-                gases: ['CO₂', 'CH₄']
-            },
-            {
-                coords: [18.4785, -69.8906],
-                type: 'archaeological',
-                name: 'Cueva de las Maravillas',
-                description: 'Sistema de cavernas con arte rupestre taíno. Pictografías y petroglifos de hace más de 800 años.',
-                risk: 'MEDIO - Espacios confinados con ventilación limitada',
-                gases: ['CO₂']
-            },
-            {
-                coords: [19.4515, -70.6972],
-                type: 'archaeological',
-                name: 'Parque Nacional Los Haitises',
-                description: 'Numerosas cuevas con arte rupestre taíno. Uno de los complejos arqueológicos más extensos del Caribe.',
-                risk: 'ALTO - Múltiples cavernas cerradas con gases acumulados',
-                gases: ['CO₂', 'CH₄', 'NH₃']
-            },
-            {
-                coords: [19.7476, -70.9986],
-                type: 'archaeological',
-                name: 'Sitio Arqueológico La Isabela',
-                description: 'Primer asentamiento europeo en América, pero con importante presencia taína anterior.',
-                risk: 'BAJO - Excavaciones al aire libre',
-                gases: []
-            },
-            {
-                coords: [18.4572, -69.9489],
-                type: 'archaeological',
-                name: 'Cueva del Pomier',
-                description: 'Sistema de 57 cuevas con la mayor concentración de arte rupestre taíno en el Caribe.',
-                risk: 'ALTO - Cuevas profundas con acumulación de gases',
-                gases: ['CO₂', 'CH₄', 'NH₃']
-            },
-            {
-                coords: [18.2368, -71.0965],
-                type: 'archaeological',
-                name: 'Sitio de Azua',
-                description: 'Restos de aldeas taínas con herramientas de piedra, cerámica y evidencias de agricultura.',
-                risk: 'MEDIO - Excavaciones con capas profundas',
-                gases: ['CO₂']
-            },
-            {
-                coords: [19.2823, -69.8850],
-                type: 'archaeological',
-                name: 'Cuevas de Borbón',
-                description: 'Complejos sistemas de cavernas utilizados por los taínos para ceremonias religiosas.',
-                risk: 'ALTO - Ventilación mínima, gases tóxicos presentes',
-                gases: ['CO₂', 'CH₄', 'H₂S']
-            },
-            {
-                coords: [18.4862, -68.9727],
-                type: 'archaeological',
-                name: 'Sitio de Higüey',
-                description: 'Antiguo cacicazgo taíno. Evidencias de la chieftaincy de Higüey.',
-                risk: 'BAJO - Excavaciones superficiales',
-                gases: []
-            }
+            {coords: [19.0347, -71.4394], type: 'mining', name: 'Minas de Pueblo Viejo', description: 'Una de las minas de oro más grandes del mundo.', risk: 'EXTREMO - H₂S, CH₄, CO', gases: ['H₂S', 'CH₄', 'CO', 'CO₂']},
+            {coords: [18.9500, -71.2500], type: 'mining', name: 'Minas de Cerro de Maimón', description: 'Explotación de cobre y oro.', risk: 'ALTO - Gases industriales', gases: ['CH₄', 'CO₂', 'SO₂']},
+            {coords: [18.5000, -70.6667], type: 'mining', name: 'Minas de Los Cacaos', description: 'Antiguas minas de oro con túneles abandonados.', risk: 'EXTREMO - Sin ventilación', gases: ['CH₄', 'CO₂', 'H₂S', 'CO']},
+            {coords: [19.6500, -70.8000], type: 'mining', name: 'Minas de Cotuy', description: 'Zona minera histórica con extracción de oro.', risk: 'ALTO - Concentraciones variables', gases: ['CH₄', 'CO₂', 'CO']},
+            {coords: [18.8000, -71.5000], type: 'mining', name: 'Minas de Las Lagunas', description: 'Minería artesanal sin regulación.', risk: 'EXTREMO - Sin detección', gases: ['CH₄', 'CO₂', 'H₂S']},
+            {coords: [18.4000, -69.5000], type: 'mining', name: 'Canteras de Piedra Caliza', description: 'Extracción de materiales de construcción.', risk: 'MEDIO - CO₂', gases: ['CO₂']},
+            {coords: [19.5000, -70.5000], type: 'mining', name: 'Minas de Ámbar', description: 'Extracción de ámbar dominicano.', risk: 'MEDIO - Espacios confinados', gases: ['CO₂', 'CH₄']},
+            {coords: [18.6000, -69.8000], type: 'mining', name: 'Minas de Larimar', description: 'Única fuente mundial de larimar.', risk: 'ALTO - Gases volcánicos', gases: ['SO₂', 'CO₂', 'H₂S']},
+            {coords: [18.4242, -69.6706], type: 'archaeological', name: 'Yacimiento de La Caleta', description: 'Sitio arqueológico taíno más importante de RD.', risk: 'ALTO - Cavernas submarinas', gases: ['CO₂', 'CH₄']},
+            {coords: [18.4785, -69.8906], type: 'archaeological', name: 'Cueva de las Maravillas', description: 'Arte rupestre taíno de hace 800 años.', risk: 'MEDIO - Ventilación limitada', gases: ['CO₂']},
+            {coords: [19.4515, -70.6972], type: 'archaeological', name: 'Parque Los Haitises', description: 'Complejo arqueológico más extenso del Caribe.', risk: 'ALTO - Cavernas cerradas', gases: ['CO₂', 'CH₄', 'NH₃']},
+            {coords: [19.7476, -70.9986], type: 'archaeological', name: 'La Isabela', description: 'Primer asentamiento europeo en América.', risk: 'BAJO - Al aire libre', gases: []},
+            {coords: [18.4572, -69.9489], type: 'archaeological', name: 'Cueva del Pomier', description: 'Mayor concentración de arte rupestre taíno.', risk: 'ALTO - Cuevas profundas', gases: ['CO₂', 'CH₄', 'NH₃']},
+            {coords: [18.2368, -71.0965], type: 'archaeological', name: 'Sitio de Azua', description: 'Restos de aldeas taínas.', risk: 'MEDIO - Capas profundas', gases: ['CO₂']},
+            {coords: [19.2823, -69.8850], type: 'archaeological', name: 'Cuevas de Borbón', description: 'Cavernas para ceremonias religiosas.', risk: 'ALTO - Ventilación mínima', gases: ['CO₂', 'CH₄', 'H₂S']},
+            {coords: [18.4862, -68.9727], type: 'archaeological', name: 'Sitio de Higüey', description: 'Antiguo cacicazgo taíno.', risk: 'BAJO - Superficial', gases: []}
         ];
 
-        const gasFormulas = {
-            'CH₄': 'Metano',
-            'CO₂': 'Dióxido de Carbono',
-            'H₂S': 'Sulfuro de Hidrógeno',
-            'CO': 'Monóxido de Carbono',
-            'NH₃': 'Amoníaco',
-            'SO₂': 'Dióxido de Azufre'
-        };
+        const gasFormulas = {'CH₄': 'Metano', 'CO₂': 'Dióxido de Carbono', 'H₂S': 'Sulfuro de Hidrógeno', 'CO': 'Monóxido de Carbono', 'NH₃': 'Amoníaco', 'SO₂': 'Dióxido de Azufre'};
 
         let tourActive = false;
         let currentStop = 0;
@@ -506,115 +461,55 @@
             
             let gasLegendHTML = '';
             if (site.gases && site.gases.length > 0) {
-                gasLegendHTML = `
-                    <div class="gas-legend">
-                        <h4>🧪 Gases Detectados:</h4>
-                        ${site.gases.map(gas => `
-                            <div class="gas-item">
-                                <span class="gas-name">${gasFormulas[gas] || gas}</span>
-                                <span class="gas-formula">${gas}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                gasLegendHTML = `<div class="gas-legend"><h4>🧪 Gases Detectados:</h4>${site.gases.map(gas => `<div class="gas-item"><span class="gas-name">${gasFormulas[gas] || gas}</span><span class="gas-formula">${gas}</span></div>`).join('')}</div>`;
             }
             
-            const popupContent = `
-                <div class="popup-content">
-                    <h3>${site.name}</h3>
-                    <span class="popup-type">${typeLabel}</span>
-                    <p>${site.description}</p>
-                    <div class="popup-warning">
-                        <strong>⚠️ Nivel de Riesgo:</strong><br>
-                        ${site.risk}
-                    </div>
-                    ${gasLegendHTML}
-                </div>
-            `;
+            const popupContent = `<div class="popup-content"><h3>${site.name}</h3><span class="popup-type">${typeLabel}</span><p>${site.description}</p><div class="popup-warning"><strong>⚠️ Riesgo:</strong><br>${site.risk}</div>${gasLegendHTML}</div>`;
             
-            const marker = L.marker(site.coords, { icon: icon })
-                .bindPopup(popupContent, { maxWidth: 320 })
-                .addTo(map);
-            
+            const marker = L.marker(site.coords, { icon: icon }).bindPopup(popupContent, { maxWidth: 320 }).addTo(map);
             markers.push(marker);
         });
 
         function startTour() {
             document.getElementById('welcome-modal').classList.remove('show');
             document.getElementById('tour-progress').classList.add('show');
-            tourActive = true;
-            currentStop = 0;
-            showStop(currentStop);
+            tourActive = true; currentStop = 0; showStop(currentStop);
         }
 
-        function skipTour() {
-            document.getElementById('welcome-modal').classList.remove('show');
-        }
+        function skipTour() { document.getElementById('welcome-modal').classList.remove('show'); }
 
         function showStop(index) {
             if (index < 0 || index >= tourStops.length) return;
-            
             const stop = tourStops[index];
             const progress = ((index + 1) / tourStops.length) * 100;
             document.getElementById('progress-fill').style.width = progress + '%';
             document.getElementById('progress-text').textContent = `Zona ${index + 1} de ${tourStops.length}`;
-            
             map.flyTo(stop.coords, 13, { duration: 2, easeLinearity: 0.25 });
-            
-            setTimeout(() => {
-                markers[index].openPopup();
-            }, 2000);
-            
+            setTimeout(() => { markers[index].openPopup(); }, 2000);
             document.getElementById('prev-btn').disabled = (index === 0);
-            document.getElementById('next-btn').disabled = false;
-            
-            if (index === tourStops.length - 1) {
-                document.getElementById('next-btn').textContent = '✓ Finalizar';
-            } else {
-                document.getElementById('next-btn').textContent = 'Siguiente →';
-            }
+            document.getElementById('next-btn').textContent = (index === tourStops.length - 1) ? '✓ Finalizar' : 'Siguiente →';
         }
 
         function nextStop() {
-            if (currentStop < tourStops.length - 1) {
-                currentStop++;
-                showStop(currentStop);
-            } else {
-                showEndModal();
-            }
+            if (currentStop < tourStops.length - 1) { currentStop++; showStop(currentStop); }
+            else { showEndModal(); }
         }
 
-        function previousStop() {
-            if (currentStop > 0) {
-                currentStop--;
-                showStop(currentStop);
-            }
-        }
+        function previousStop() { if (currentStop > 0) { currentStop--; showStop(currentStop); } }
 
         function showEndModal() {
             document.getElementById('tour-progress').classList.remove('show');
             document.getElementById('end-modal').classList.add('show');
-            tourActive = false;
-            map.setView([18.7357, -70.1627], 9);
+            tourActive = false; map.setView([18.7357, -70.1627], 9);
         }
 
-        function closeEndModal() {
-            document.getElementById('end-modal').classList.remove('show');
-        }
-
-        function restartTour() {
-            document.getElementById('end-modal').classList.remove('show');
-            startTour();
-        }
-
-        function endTour() {
-            showEndModal();
-        }
+        function closeEndModal() { document.getElementById('end-modal').classList.remove('show'); }
+        function restartTour() { document.getElementById('end-modal').classList.remove('show'); startTour(); }
+        function endTour() { showEndModal(); }
 
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('welcome-modal').classList.add('show');
-            }, 500);
+            setTimeout(() => { map.invalidateSize(); }, 100);
+            setTimeout(() => { document.getElementById('welcome-modal').classList.add('show'); }, 500);
         });
     </script>
 </body>
