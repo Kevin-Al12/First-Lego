@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Educativo - Guardianes del Pasado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --verde-oscuro: #2d5016; --verde-medio: #6ea043; --marron-oscuro: #6b4423;
+            --crema-claro: #f4e4c1; --dorado: #e8c17c; --marron-claro: #8b6f47;
+            --texto-oscuro: #1a1a1a; --blanco: #ffffff;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--crema-claro) 0%, #fef9f0 100%);
+            color: var(--texto-oscuro); line-height: 1.5; font-size: 14px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+            padding: 0.8rem 0; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(45, 80, 22, 0.3);
+        }
+        .header-content {
+            max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo h1 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); font-weight: 900;
+        }
+        .logo p { color: var(--crema-claro); font-size: 0.7rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a {
+            color: var(--crema-claro); text-decoration: none; font-weight: 500;
+            font-size: 0.85rem; transition: all 0.3s; position: relative;
+        }
+        nav a.active { color: var(--dorado); }
+        nav a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--dorado); transition: width 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        .page-hero {
+            background: linear-gradient(135deg, rgba(107, 68, 35, 0.92) 0%, rgba(139, 111, 71, 0.88) 100%);
+            padding: 4rem 1.5rem; text-align: center; color: var(--blanco);
+        }
+        .page-hero h1 {
+            font-family: 'Merriweather', serif; font-size: 3rem;
+            color: var(--dorado); margin-bottom: 0.6rem; font-weight: 900;
+        }
+        .page-hero p {
+            font-size: 1.2rem; color: var(--crema-claro); max-width: 700px; margin: 0 auto;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem; }
+        .game-section {
+            background: var(--blanco); border-radius: 18px; padding: 3rem;
+            box-shadow: 0 8px 30px rgba(45, 80, 22, 0.15);
+            border: 4px solid var(--verde-medio);
+        }
+        .game-instructions {
+            background: linear-gradient(135deg, rgba(110, 160, 67, 0.1), rgba(232, 193, 124, 0.1));
+            border-left: 5px solid var(--verde-medio);
+            padding: 1.8rem; margin-bottom: 2.5rem; border-radius: 12px;
+        }
+        .game-instructions h2 {
+            font-family: 'Merriweather', serif; font-size: 1.8rem;
+            color: var(--verde-oscuro); margin-bottom: 1.2rem;
+        }
+        .game-instructions ul {
+            list-style: none; line-height: 2; font-size: 0.95rem;
+        }
+        .game-instructions li::before {
+            content: '🎯 '; margin-right: 0.4rem; font-size: 1.1rem;
+        }
+        .game-stats {
+            display: flex; justify-content: space-around; flex-wrap: wrap;
+            margin: 2.5rem 0; padding: 1.8rem; background: var(--crema-claro);
+            border-radius: 12px; gap: 1.5rem;
+        }
+        .stat {
+            text-align: center; min-width: 130px;
+        }
+        .stat-label {
+            color: var(--marron-claro); font-size: 0.9rem;
+            font-weight: 600; margin-bottom: 0.4rem;
+        }
+        .stat-value {
+            font-family: 'Merriweather', serif; font-size: 2.5rem;
+            font-weight: 700; color: var(--verde-oscuro);
+        }
+        .memory-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem; max-width: 600px; margin: 2.5rem auto;
+        }
+        .memory-card {
+            aspect-ratio: 1; background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+            border: 3px solid var(--verde-medio); border-radius: 15px;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 3rem;
+            transition: all 0.3s; position: relative; box-shadow: 0 3px 12px rgba(45, 80, 22, 0.3);
+        }
+        .memory-card:hover:not(.flipped):not(.matched) {
+            transform: scale(1.05); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.4);
+        }
+        .memory-card.flipped, .memory-card.matched {
+            background: white; border-color: var(--dorado);
+        }
+        .memory-card.matched {
+            border-color: #27ae60; background: #e8f5e9;
+            animation: pulse 0.5s ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .memory-card .card-front {
+            display: none; text-align: center;
+        }
+        .memory-card.flipped .card-front,
+        .memory-card.matched .card-front {
+            display: block;
+        }
+        .memory-card .card-back {
+            color: white; font-size: 2.8rem;
+        }
+        .memory-card.flipped .card-back,
+        .memory-card.matched .card-back {
+            display: none;
+        }
+        .card-label {
+            font-size: 0.9rem; font-weight: 600; margin-top: 0.4rem;
+            color: var(--marron-oscuro);
+        }
+        .game-controls {
+            text-align: center; margin-top: 2.5rem;
+            display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+        }
+        .game-btn {
+            background: var(--verde-medio); color: white; border: none;
+            padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 600;
+            border-radius: 50px; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 3px 12px rgba(110, 160, 67, 0.3);
+        }
+        .game-btn:hover {
+            background: var(--verde-oscuro); transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(110, 160, 67, 0.5);
+        }
+        .game-btn.reset {
+            background: var(--marron-oscuro);
+        }
+        .game-btn.reset:hover {
+            background: var(--marron-claro);
+        }
+        .victory-message {
+            display: none; background: linear-gradient(135deg, var(--verde-medio), var(--verde-oscuro));
+            color: white; padding: 2.5rem; border-radius: 18px;
+            text-align: center; margin-top: 1.8rem; animation: fadeIn 0.5s;
+        }
+        .victory-message.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .victory-message h3 {
+            font-family: 'Merriweather', serif; font-size: 2.2rem;
+            color: var(--dorado); margin-bottom: 0.8rem;
+        }
+        .victory-message p {
+            font-size: 1.2rem; margin: 0.4rem 0;
+        }
+        .fun-facts {
+            background: var(--crema-claro); padding: 2.5rem;
+            border-radius: 18px; margin-top: 3.5rem;
+        }
+        .fun-facts h2 {
+            font-family: 'Merriweather', serif; font-size: 2rem;
+            color: var(--marron-oscuro); margin-bottom: 1.8rem; text-align: center;
+        }
+        .fact-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .fact-card {
+            background: var(--blanco); padding: 1.5rem; border-radius: 12px;
+            border-left: 4px solid var(--verde-medio);
+        }
+        .fact-card h4 {
+            color: var(--verde-oscuro); margin-bottom: 0.8rem; font-size: 1.2rem;
+        }
+        .fact-card p {
+            font-size: 0.9rem; line-height: 1.6;
+        }
+        footer {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--marron-oscuro) 100%);
+            color: var(--crema-claro); padding: 2.5rem 1.5rem 1.2rem; margin-top: 3rem;
+        }
+        .footer-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .footer-content h3 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); margin-bottom: 0.8rem; font-style: italic;
+        }
+        .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
+        @media (max-width: 768px) {
+            nav ul { flex-direction: column; gap: 0.6rem; }
+            .memory-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>GUARDIANES DEL PASADO</h1>
+                <p>Club de Robótica Politécnico ITLA</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="proyecto.html">PROYECTO</a></li>
+                    <li><a href="solucion.html">SOLUCIÓN</a></li>
+                    <li><a href="mapa.html">EXPLORACIÓN</a></li>
+                    <li><a href="juego.html" class="active">JUEGO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <h1> Juego Educativo</h1>
+        <p>Aprende sobre los gases tóxicos mientras te diviertes</p>
+    </div>
+
+    <div class="container">
+        <div class="game-section">
+            <div class="game-instructions">
+                <h2>📋 ¿Cómo Jugar?</h2>
+                <ul>
+                    <li>Encuentra las parejas de gases tóxicos que el ArqueoBot Guard debe detectar</li>
+                    <li>Haz clic en las tarjetas para voltearlas y ver qué gas hay detrás</li>
+                    <li>Memoriza la ubicación de cada gas para encontrar su pareja</li>
+                    <li>Empareja los gases iguales para eliminarlos del tablero</li>
+                    <li>¡Completa el juego en el menor tiempo y con menos movimientos posibles!</li>
+                </ul>
+            </div>
+
+            <div class="game-stats">
+                <div class="stat">
+                    <div class="stat-label">PAREJAS ENCONTRADAS</div>
+                    <div class="stat-value" id="matches">0 / 6</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">MOVIMIENTOS</div>
+                    <div class="stat-value" id="moves">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">TIEMPO</div>
+                    <div class="stat-value" id="time">0s</div>
+                </div>
+            </div>
+
+            <div class="memory-grid" id="memory-grid"></div>
+
+            <div class="game-controls">
+                <button class="game-btn reset" onclick="resetMemoryGame()">🔄 NUEVA PARTIDA</button>
+                <button class="game-btn" onclick="window.location.href='mapa.html'">🗺️ VER MAPA</button>
+            </div>
+
+            <div class="victory-message" id="victory-message">
+                <h3>¡🎉 FELICITACIONES! 🎉</h3>
+                <p><strong>Has completado el juego exitosamente</strong></p>
+                <p id="victory-stats"></p>
+                <p style="margin-top: 1.2rem; font-size: 1rem;">
+                    Ahora conoces los gases que el ArqueoBot Guard detecta para proteger vidas.
+                </p>
+            </div>
+        </div>
+
+        <div class="fun-facts">
+            <h2>💡 Datos Curiosos sobre los Gases</h2>
+            <div class="fact-grid">
+                <div class="fact-card">
+                    <h4>💨 Metano (CH₄)</h4>
+                    <p>
+                        El metano es 25 veces más potente que el CO₂ como gas de efecto invernadero. 
+                        En cavernas puede desplazar el oxígeno y causar asfixia en minutos.
+                    </p>
+                </div>
+
+                <div class="fact-card">
+                    <h4>☁️ Dióxido de Carbono (CO₂)</h4>
+                    <p>
+                        Aunque lo exhalamos naturalmente, en concentraciones superiores al 5% 
+                        puede causar pérdida de conciencia y muerte en espacios cerrados.
+                    </p>
+                </div>
+
+                <div class="fact-card">
+                    <h4>💀 Sulfuro de Hidrógeno (H₂S)</h4>
+                    <p>
+                        Con olor a huevo podrido a bajas concentraciones, paraliza el sentido 
+                        del olfato en concentraciones altas, haciéndolo "invisible" y mortal.
+                    </p>
+                </div>
+
+                <div class="fact-card">
+                    <h4>🔥 Monóxido de Carbono (CO)</h4>
+                    <p>
+                        Llamado "el asesino silencioso" porque no tiene olor, color ni sabor. 
+                        Se une a la hemoglobina 200 veces más fuerte que el oxígeno.
+                    </p>
+                </div>
+
+                <div class="fact-card">
+                    <h4>🌫️ Amoníaco (NH₃)</h4>
+                    <p>
+                        Presente en descomposición orgánica. Irrita severamente las vías 
+                        respiratorias y puede causar edema pulmonar en altas concentraciones.
+                    </p>
+                </div>
+
+                <div class="fact-card">
+                    <h4>☢️ Dióxido de Azufre (SO₂)</h4>
+                    <p>
+                        Gas tóxico que reacciona con el agua en los pulmones formando ácido sulfúrico, 
+                        causando daño respiratorio severo e inmediato.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <p><strong>Equipo Guardianes del Pasado</strong></p>
+            <p>Club de Robótica | Politécnico ITLA</p>
+            <p>FIRST LEGO League Challenge 2024</p>
+            <p>Boca Chica, República Dominicana 🇩🇴</p>
+            <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(244, 228, 193, 0.3); font-size: 0.75rem; opacity: 0.7;">
+                © 2024 Guardianes del Pasado. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const gasCards = [
+            { id: 1, emoji: '💨', name: 'CH₄', fullName: 'Metano' },
+            { id: 2, emoji: '☁️', name: 'CO₂', fullName: 'Dióxido de Carbono' },
+            { id: 3, emoji: '💀', name: 'H₂S', fullName: 'Sulfuro de Hidrógeno' },
+            { id: 4, emoji: '🌫️', name: 'NH₃', fullName: 'Amoníaco' },
+            { id: 5, emoji: '☢️', name: 'SO₂', fullName: 'Dióxido de Azufre' },
+            { id: 6, emoji: '🔥', name: 'CO', fullName: 'Monóxido de Carbono' }
+        ];
+
+        let gameCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let gameTime = 0;
+        let gameTimer = null;
+        let gameStarted = false;
+
+        function initMemoryGame() {
+            gameCards = [...gasCards, ...gasCards]
+                .sort(() => Math.random() - 0.5)
+                .map((card, index) => ({ ...card, uniqueId: index }));
+            
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+            
+            gameCards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'memory-card';
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.uniqueid = card.uniqueId;
+                cardEl.innerHTML = `
+                    <div class="card-back">🤖</div>
+                    <div class="card-front">
+                        <div>${card.emoji}</div>
+                        <div class="card-label">${card.name}</div>
+                    </div>
+                `;
+                cardEl.addEventListener('click', () => flipCard(cardEl, card));
+                grid.appendChild(cardEl);
+            });
+            
+            resetGameStats();
+            document.getElementById('victory-message').classList.remove('show');
+        }
+
+        function flipCard(cardEl, card) {
+            if (flippedCards.length >= 2 || cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) {
+                return;
+            }
+            
+            if (!gameStarted) {
+                startGameTimer();
+                gameStarted = true;
+            }
+            
+            cardEl.classList.add('flipped');
+            flippedCards.push({ element: cardEl, card: card });
+            
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').textContent = moves;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = flippedCards;
+            
+            if (first.card.id === second.card.id) {
+                first.element.classList.add('matched');
+                second.element.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('matches').textContent = `${matchedPairs} / 6`;
+                
+                flippedCards = [];
+                
+                if (matchedPairs === 6) {
+                    winGame();
+                }
+            } else {
+                setTimeout(() => {
+                    first.element.classList.remove('flipped');
+                    second.element.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function startGameTimer() {
+            gameTimer = setInterval(() => {
+                gameTime++;
+                document.getElementById('time').textContent = gameTime + 's';
+            }, 1000);
+        }
+
+        function winGame() {
+            clearInterval(gameTimer);
+            setTimeout(() => {
+                const victoryMsg = document.getElementById('victory-message');
+                const stats = document.getElementById('victory-stats');
+                stats.innerHTML = `
+                    <strong>⏱️ Tiempo:</strong> ${gameTime} segundos<br>
+                    <strong>🔄 Movimientos:</strong> ${moves}
+                `;
+                victoryMsg.classList.add('show');
+                
+                victoryMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+
+        function resetGameStats() {
+            matchedPairs = 0;
+            moves = 0;
+            gameTime = 0;
+            flippedCards = [];
+            gameStarted = false;
+            clearInterval(gameTimer);
+            gameTimer = null;
+            
+            document.getElementById('matches').textContent = '0 / 6';
+            document.getElementById('moves').textContent = '0';
+            document.getElementById('time').textContent = '0s';
+        }
+
+        function resetMemoryGame() {
+            initMemoryGame();
+        }
+
+        initMemoryGame();
+    </script>
+</body>
+</html>

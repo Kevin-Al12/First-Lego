@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardianes del Pasado - FLL Challenge 2024</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --verde-oscuro: #2d5016;
+            --verde-medio: #6ea043;
+            --marron-oscuro: #6b4423;
+            --crema-claro: #f4e4c1;
+            --dorado: #e8c17c;
+            --marron-claro: #8b6f47;
+            --texto-oscuro: #1a1a1a;
+            --blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--crema-claro) 0%, #fef9f0 100%);
+            color: var(--texto-oscuro);
+            line-height: 1.5;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(45, 80, 22, 0.3);
+        }
+
+        .header-content {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            color: var(--dorado);
+            font-weight: 900;
+        }
+
+        .logo p {
+            color: var(--crema-claro);
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--crema-claro);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--dorado);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--dorado);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 65vh;
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.95) 0%, rgba(110, 160, 67, 0.9) 50%, rgba(107, 68, 35, 0.85) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 750px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 3rem;
+            color: var(--dorado);
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: var(--crema-claro);
+            margin-bottom: 0.6rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .hero .institution {
+            font-size: 0.9rem;
+            color: var(--blanco);
+            margin-bottom: 1.8rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--dorado);
+            color: var(--verde-oscuro);
+            box-shadow: 0 3px 15px rgba(232, 193, 124, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--crema-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(232, 193, 124, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--crema-claro);
+            border: 2px solid var(--crema-claro);
+        }
+
+        .btn-secondary:hover {
+            background: var(--crema-claro);
+            color: var(--verde-oscuro);
+            transform: translateY(-2px);
+        }
+
+        .stats-section {
+            background: var(--marron-oscuro);
+            padding: 2.5rem 1.5rem;
+            margin: -35px 0 0 0;
+            position: relative;
+            z-index: 5;
+        }
+
+        .stats-grid {
+            max-width: 100%;
+            padding: 0 3rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.3rem;
+            background: rgba(244, 228, 193, 0.1);
+            border-radius: 10px;
+            border: 2px solid var(--dorado);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            background: rgba(244, 228, 193, 0.15);
+            box-shadow: 0 6px 20px rgba(232, 193, 124, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .stat-number {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2rem;
+            color: var(--dorado);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            color: var(--crema-claro);
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        .features-section {
+            padding: 3.5rem 3rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2rem;
+            color: var(--verde-oscuro);
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1rem;
+            color: var(--marron-claro);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .feature-card {
+            background: var(--blanco);
+            border: 3px solid var(--verde-medio);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--verde-oscuro), var(--verde-medio), var(--dorado));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(45, 80, 22, 0.2);
+            border-color: var(--dorado);
+        }
+
+        .feature-icon {
+            font-size: 2.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            color: var(--verde-oscuro);
+            margin-bottom: 0.6rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--texto-oscuro);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-link {
+            color: var(--verde-medio);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .feature-link:hover {
+            color: var(--verde-oscuro);
+            gap: 0.6rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--marron-oscuro) 100%);
+            color: var(--crema-claro);
+            padding: 2.5rem 1.5rem 1.2rem;
+            margin-top: 3.5rem;
+        }
+
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-content h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            color: var(--dorado);
+            margin-bottom: 0.8rem;
+            font-style: italic;
+        }
+
+        .footer-content p {
+            font-size: 0.85rem;
+            margin: 0.3rem 0;
+            opacity: 0.9;
+        }
+
+        .footer-logo {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(244, 228, 193, 0.3);
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>GUARDIANES DEL PASADO</h1>
+                <p>Club de Robótica Politécnico ITLA</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="proyecto.html">PROYECTO</a></li>
+                    <li><a href="solucion.html">SOLUCIÓN</a></li>
+                    <li><a href="mapa.html">EXPLORACIÓN</a></li>
+                    <li><a href="juego.html">JUEGO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>GUARDIANES DEL PASADO</h1>
+            <p class="tagline">Tecnología que Protege Nuestra Historia</p>
+            <p class="institution">Politécnico ITLA | Boca Chica, República Dominicana 🇩🇴</p>
+            <div class="cta-buttons">
+                <a href="proyecto.html" class="btn btn-primary">DESCUBRE NUESTRO PROYECTO</a>
+                <a href="mapa.html" class="btn btn-secondary">EXPLORA EL MAPA INTERACTIVO</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏛️</div>
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Sitios Arqueológicos Identificados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">Gases Tóxicos Detectados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Soluciones Tecnológicas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Compromiso con la Seguridad</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="section-header">
+            <h2>Nuestras Innovaciones</h2>
+            <p>Soluciones tecnológicas diseñadas para proteger a quienes estudian nuestro pasado</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>El Proyecto</h3>
+                <p>Descubre la problemática, fundamentación científica y cómo surgió nuestra solución para proteger
+                    arqueólogos.</p>
+                <a href="proyecto.html" class="feature-link">Ver más →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔬</div>
+                <h3>La Solución</h3>
+                <p>Explora nuestras dos innovaciones tecnológicas: ArqueoBot Guard y MaskArq Safe, diseñadas para salvar
+                    vidas.</p>
+                <a href="solucion.html" class="feature-link">Ver más →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3>Exploración Interactiva</h3>
+                <p>Navega por un mapa real de República Dominicana descubriendo sitios arqueológicos y puntos mineros.
+                </p>
+                <a href="mapa.html" class="feature-link">Ver más →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3>Juego Educativo</h3>
+                <p>Aprende sobre los gases tóxicos de forma divertida con nuestro juego de memoria.</p>
+                <a href="juego.html" class="feature-link">Ver más →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <p><strong>Equipo Guardianes del Pasado</strong></p>
+            <p>Club de Robótica | Politécnico ITLA</p>
+            <p>FIRST LEGO League Challenge 2024</p>
+            <p>Boca Chica, República Dominicana 🇩🇴</p>
+            <div class="footer-logo">© 2024 Guardianes del Pasado. Todos los derechos reservados.</div>
+        </div>
+    </footer>
+</body>
+
+</html>

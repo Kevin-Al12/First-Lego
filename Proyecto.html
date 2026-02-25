@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Proyecto - Guardianes del Pasado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --verde-oscuro: #2d5016; --verde-medio: #6ea043; --marron-oscuro: #6b4423;
+            --crema-claro: #f4e4c1; --dorado: #e8c17c; --marron-claro: #8b6f47;
+            --texto-oscuro: #1a1a1a; --blanco: #ffffff; --rojo: #c0392b;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--crema-claro) 0%, #fef9f0 100%);
+            color: var(--texto-oscuro); line-height: 1.5; font-size: 14px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+            padding: 0.8rem 0; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(45, 80, 22, 0.3);
+        }
+        .header-content {
+            max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo h1 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); font-weight: 900;
+        }
+        .logo p { color: var(--crema-claro); font-size: 0.7rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a {
+            color: var(--crema-claro); text-decoration: none; font-weight: 500;
+            font-size: 0.85rem; transition: all 0.3s; position: relative;
+        }
+        nav a.active { color: var(--dorado); }
+        nav a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--dorado); transition: width 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        .page-hero {
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.92) 0%, rgba(110, 160, 67, 0.88) 100%);
+            padding: 4rem 1.5rem; text-align: center; color: var(--blanco);
+        }
+        .page-hero h1 {
+            font-family: 'Merriweather', serif; font-size: 3rem;
+            color: var(--dorado); margin-bottom: 0.8rem; font-weight: 900;
+        }
+        .page-hero p {
+            font-size: 1.2rem; color: var(--crema-claro); max-width: 700px; margin: 0 auto;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem; }
+        
+        .section {
+            background: var(--blanco); border-radius: 15px; padding: 2.5rem;
+            margin-bottom: 3rem; box-shadow: 0 6px 25px rgba(45, 80, 22, 0.1);
+            border: 3px solid var(--verde-medio);
+        }
+        .section h2 {
+            font-family: 'Merriweather', serif; font-size: 2rem;
+            color: var(--verde-oscuro); margin-bottom: 1.5rem;
+            border-left: 5px solid var(--dorado); padding-left: 1rem;
+        }
+        .section p {
+            font-size: 1rem; line-height: 1.7; color: var(--texto-oscuro); margin-bottom: 1rem;
+        }
+        .section strong { color: var(--verde-oscuro); font-weight: 600; }
+        
+        .warning-banner {
+            background: linear-gradient(135deg, rgba(139, 111, 71, 0.08), rgba(232, 193, 124, 0.12));
+            padding: 2rem; border-radius: 12px; margin: 2rem 0;
+            border-left: 5px solid var(--marron-oscuro);
+            box-shadow: 0 3px 12px rgba(107, 68, 35, 0.15);
+        }
+        .warning-banner h3 {
+            font-family: 'Merriweather', serif; font-size: 1.6rem; margin-bottom: 0.8rem;
+            color: var(--marron-oscuro); display: flex; align-items: center; gap: 0.5rem;
+        }
+        .warning-banner p { 
+            font-size: 1rem; line-height: 1.7; color: var(--texto-oscuro);
+        }
+        
+        .data-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin: 2rem 0;
+        }
+        .data-card {
+            background: linear-gradient(135deg, rgba(110, 160, 67, 0.05), rgba(232, 193, 124, 0.05));
+            padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--verde-medio);
+        }
+        .data-card h4 {
+            font-family: 'Merriweather', serif; font-size: 1.2rem;
+            color: var(--marron-oscuro); margin-bottom: 0.8rem;
+        }
+        .data-card p { font-size: 0.9rem; line-height: 1.6; }
+        
+        .gases-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; margin: 2rem 0;
+        }
+        .gas-card {
+            background: var(--blanco); border-radius: 15px; padding: 2rem;
+            border: 3px solid var(--rojo); box-shadow: 0 6px 20px rgba(192, 57, 43, 0.15);
+            transition: all 0.3s;
+        }
+        .gas-card:hover {
+            transform: translateY(-6px); box-shadow: 0 12px 30px rgba(192, 57, 43, 0.25);
+        }
+        .gas-icon {
+            font-size: 4rem; margin-bottom: 1rem; text-align: center; display: block;
+        }
+        .gas-card h3 {
+            font-family: 'Merriweather', serif; font-size: 1.6rem;
+            color: var(--rojo); margin-bottom: 0.8rem; text-align: center;
+        }
+        .gas-formula {
+            background: var(--crema-claro); padding: 0.4rem 0.8rem; border-radius: 20px;
+            display: inline-block; font-weight: 600; margin-bottom: 1rem;
+            color: var(--marron-oscuro);
+        }
+        .effects-list {
+            list-style: none; margin-top: 1rem;
+        }
+        .effects-list li {
+            padding: 0.6rem 0; border-bottom: 1px solid var(--crema-claro);
+            font-size: 0.9rem;
+        }
+        .effects-list li::before {
+            content: '⚠️ '; margin-right: 0.4rem;
+        }
+        
+        .stats-danger {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--verde-oscuro));
+            padding: 3rem 1.5rem; margin: 3rem -1.5rem; border-radius: 0;
+        }
+        .stats-danger h2 {
+            font-family: 'Merriweather', serif; font-size: 2.2rem;
+            color: var(--dorado); text-align: center; margin-bottom: 2rem;
+        }
+        .stats-grid-danger {
+            max-width: 850px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+        .stat-danger {
+            text-align: center; padding: 1.5rem; background: rgba(244, 228, 193, 0.1);
+            border-radius: 12px; border: 2px solid var(--rojo);
+        }
+        .stat-danger-number {
+            font-family: 'Merriweather', serif; font-size: 2.8rem;
+            color: var(--rojo); font-weight: 700; margin-bottom: 0.4rem;
+        }
+        .stat-danger-label {
+            color: var(--crema-claro); font-size: 0.95rem;
+        }
+        
+        .timeline {
+            max-width: 750px; margin: 2rem auto; position: relative;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            width: 3px; height: 100%; background: var(--dorado);
+        }
+        .timeline-item {
+            margin-bottom: 2rem; position: relative; padding: 0 2rem;
+        }
+        .timeline-item:nth-child(odd) {
+            text-align: right; padding-right: calc(50% + 3rem);
+        }
+        .timeline-item:nth-child(even) {
+            text-align: left; padding-left: calc(50% + 3rem);
+        }
+        .timeline-dot {
+            position: absolute; top: 0; width: 20px; height: 20px;
+            background: var(--dorado); border: 4px solid var(--verde-oscuro);
+            border-radius: 50%; left: 50%; transform: translateX(-50%); z-index: 2;
+        }
+        .timeline-content {
+            background: var(--blanco); padding: 1.5rem; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .timeline-content h3 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--verde-oscuro); margin-bottom: 0.4rem;
+        }
+        .timeline-date {
+            color: var(--marron-claro); font-weight: 600; margin-bottom: 0.8rem;
+            display: block; font-size: 0.9rem;
+        }
+        .timeline-content p {
+            color: var(--texto-oscuro); line-height: 1.6; font-size: 0.9rem;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--marron-oscuro) 100%);
+            color: var(--crema-claro); padding: 2.5rem 1.5rem 1.2rem; margin-top: 3rem;
+        }
+        .footer-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .footer-content h3 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); margin-bottom: 0.8rem; font-style: italic;
+        }
+        .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
+        
+        @media (max-width: 768px) {
+            .timeline::before { left: 15px; }
+            .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {
+                text-align: left; padding: 0 0 0 3rem;
+            }
+            .timeline-dot { left: 15px; }
+            nav ul { flex-direction: column; gap: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>GUARDIANES DEL PASADO</h1>
+                <p>Club de Robótica Politécnico ITLA</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="proyecto.html" class="active">PROYECTO</a></li>
+                    <li><a href="solucion.html">SOLUCIÓN</a></li>
+                    <li><a href="mapa.html">EXPLORACIÓN</a></li>
+                    <li><a href="juego.html">JUEGO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <h1>Nuestro Proyecto</h1>
+        <p>Problemática, fundamentación científica y el origen de nuestra solución</p>
+    </div>
+
+    <div class="container">
+        <!-- 1. PROBLEMÁTICA -->
+        <section class="section">
+            <h2>La Problemática</h2>
+            <p>
+                Los yacimientos arqueológicos taínos de La Caleta en Boca Chica y otras ubicaciones arqueológicas y mineras 
+                de República Dominicana representan un patrimonio cultural invaluable. Sin embargo, <strong>arqueólogos, 
+                y profesionales en el area</strong> que trabajan en estas excavaciones enfrentan un peligro invisible pero letal: 
+                la exposición a gases tóxicos acumulados en espacios confinados.
+            </p>
+            
+            <div class="warning-banner">
+                <h3>⚠️ Peligro Invisible en las Excavaciones</h3>
+                <p>
+                    Durante las excavaciones arqueológicas, los investigadores se enfrentan a exposición potencial a 
+                    <strong>gases tóxicos peligrosos</strong> que pueden causar desde mareos hasta la muerte. 
+                    Estos gases no tienen olor, no se pueden ver, y atacan sin previo aviso.
+                </p>
+            </div>
+
+            <p>
+                En cavernas, túneles subterráneos y espacios confinados, se acumulan peligrosas concentraciones de 
+                metano (CH₄), dióxido de carbono (CO₂), sulfuro de hidrógeno (H₂S), monóxido de carbono (CO), 
+                amoníaco (NH₃) y dióxido de azufre (SO₂). <strong>La falta de detección temprana ha resultado 
+                en accidentes, intoxicaciones y muertes prevenibles a nivel mundial.</strong>
+            </p>
+        </section>
+
+        <!-- 2. GASES TÓXICOS -->
+        <section class="section">
+            <h2>Gases Tóxicos Identificados</h2>
+            <div class="gases-grid">
+                <div class="gas-card">
+                    <span class="gas-icon">💨</span>
+                    <h3>Metano</h3>
+                    <div style="text-align: center;">
+                        <span class="gas-formula">CH₄</span>
+                    </div>
+                    <p style="text-align: center; color: var(--marron-claro); margin-bottom: 0.8rem; font-size: 0.9rem;">
+                        Gas inflamable y asfixiante
+                    </p>
+                    <ul class="effects-list">
+                        <li>Desplaza el oxígeno del aire</li>
+                        <li>Causa asfixia en concentraciones altas</li>
+                        <li>Altamente inflamable (riesgo de explosión)</li>
+                    </ul>
+                </div>
+
+                <div class="gas-card">
+                    <span class="gas-icon">☁️</span>
+                    <h3>Dióxido de Carbono</h3>
+                    <div style="text-align: center;">
+                        <span class="gas-formula">CO₂</span>
+                    </div>
+                    <p style="text-align: center; color: var(--marron-claro); margin-bottom: 0.8rem; font-size: 0.9rem;">
+                        Asfixiante común en cavernas
+                    </p>
+                    <ul class="effects-list">
+                        <li>Acumulación en espacios confinados</li>
+                        <li>Dificultad para respirar</li>
+                        <li>Muerte por asfixia en minutos</li>
+                    </ul>
+                </div>
+
+                <div class="gas-card">
+                    <span class="gas-icon">💀</span>
+                    <h3>Sulfuro de Hidrógeno</h3>
+                    <div style="text-align: center;">
+                        <span class="gas-formula">H₂S</span>
+                    </div>
+                    <p style="text-align: center; color: var(--marron-claro); margin-bottom: 0.8rem; font-size: 0.9rem;">
+                        Extremadamente tóxico
+                    </p>
+                    <ul class="effects-list">
+                        <li>Paraliza el sistema respiratorio</li>
+                        <li>Daño neurológico permanente</li>
+                        <li>Muerte instantánea en altas concentraciones</li>
+                    </ul>
+                </div>
+
+                <div class="gas-card">
+                    <span class="gas-icon">🔥</span>
+                    <h3>Monóxido de Carbono</h3>
+                    <div style="text-align: center;">
+                        <span class="gas-formula">CO</span>
+                    </div>
+                    <p style="text-align: center; color: var(--marron-claro); margin-bottom: 0.8rem; font-size: 0.9rem;">
+                        "El asesino silencioso"
+                    </p>
+                    <ul class="effects-list">
+                        <li>Imposible de detectar sin equipos</li>
+                        <li>Causa daño cerebral irreversible</li>
+                        <li>Se adhiere 200x más fuerte que el O₂</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-danger">
+            <h2>Datos Alarmantes</h2>
+            <div class="stats-grid-danger">
+                <div class="stat-danger">
+                    <div class="stat-danger-number">500+</div>
+                    <div class="stat-danger-label">PPM de CO₂ es peligroso</div>
+                </div>
+                <div class="stat-danger">
+                    <div class="stat-danger-number">10</div>
+                    <div class="stat-danger-label">PPM de H₂S puede ser fatal</div>
+                </div>
+                <div class="stat-danger">
+                    <div class="stat-danger-number">5%</div>
+                    <div class="stat-danger-label">CH₄ puede causar explosión</div>
+                </div>
+                <div class="stat-danger">
+                    <div class="stat-danger-number">35</div>
+                    <div class="stat-danger-label">PPM de CO causa síntomas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. FUNDAMENTACIÓN -->
+        <section class="section">
+            <h2>Fundamentación Científica</h2>
+            
+            <div class="data-grid">
+                <div class="data-card">
+                    <h4>📊 Datos de la OMS</h4>
+                    <p>
+                        La Organización Mundial de la Salud reporta que <strong>espacios confinados sin ventilación adecuada 
+                        son responsables de miles de muertes anuales</strong> por intoxicación con gases tóxicos a nivel mundial.
+                    </p>
+                </div>
+
+                <div class="data-card">
+                    <h4>🔬 Estudios de Seguridad Industrial</h4>
+                    <p>
+                        Según NIOSH (Instituto Nacional para la Seguridad y Salud Ocupacional), <strong>el 60% de las muertes 
+                        en espacios confinados podrían prevenirse</strong> con sistemas de detección temprana de gases.
+                    </p>
+                </div>
+
+                <div class="data-card">
+                    <h4>⚗️ Investigación en Arqueología</h4>
+                    <p>
+                        Estudios publicados en el Journal of Archaeological Science documentan <strong>múltiples casos de 
+                        intoxicación por CO₂ y H₂S</strong> en excavaciones de cavernas y sitios arqueológicos cerrados.
+                    </p>
+                </div>
+
+                <div class="data-card">
+                    <h4>Contexto Dominicano</h4>
+                    <p>
+                        República Dominicana posee <strong>más de 15 sitios arqueológicos taínos importantes</strong> y 
+                        8 zonas mineras activas donde la detección de gases es crítica para la seguridad de los trabajadores.
+                    </p>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem;">
+                <strong>¿Por qué ocurre en excavaciones?</strong>
+            </p>
+            <p>
+                <strong>Espacios Confinados:</strong> Las cavernas y túneles excavados tienen poca ventilación, 
+                permitiendo que los gases se acumulen en concentraciones letales.<br><br>
+                <strong>Descomposición Orgánica:</strong> Materia orgánica antigua se descompone liberando 
+                metano y dióxido de carbono continuamente.<br><br>
+                <strong>Reacciones Químicas:</strong> Minerales y sedimentos reaccionan con agua subterránea 
+                produciendo gases peligrosos.<br><br>
+                <strong>Exposición Prolongada:</strong> Los arqueólogos pasan horas en estos espacios, 
+                aumentando dramáticamente el riesgo de intoxicación.
+            </p>
+        </section>
+
+        <!-- 4. LA SOLUCIÓN -->
+        <section class="section">
+            <h2>Nuestra Solución</h2>
+            <p>
+                Para resolver esta problemática, desarrollamos <strong>dos innovaciones tecnológicas complementarias</strong>:
+            </p>
+            
+            <div class="data-grid" style="margin-top: 2rem;">
+                <div class="data-card" style="border-left-color: var(--marron-oscuro);">
+                    <h4>🤖 ArqueoBot Guard</h4>
+                    <p>
+                        Plataforma robótica móvil autónoma equipada con sensores MQ-2, MQ-7 y MQ-135 que <strong>explora 
+                        áreas arqueológicas antes del ingreso de personal</strong>, detectando concentraciones peligrosas 
+                        de gases tóxicos y alertando en tiempo real mediante un sistema de luces y alarmas.
+                    </p>
+                </div>
+
+                <div class="data-card" style="border-left-color: var(--verde-oscuro);">
+                    <h4>😷 MaskArq Safe</h4>
+                    <p>
+                        Máscara respiratoria avanzada con <strong>sistema de filtración de carbón activado</strong> e 
+                        indicadores LED que proporciona protección personal continua durante las excavaciones, con alertas 
+                        visuales sobre el estado del filtro y calidad del aire.
+                    </p>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem;">
+                Estas soluciones permiten que <strong>la investigación arqueológica continúe sin poner en riesgo la salud 
+                de científicos, estudiantes y voluntarios</strong> que dedican su tiempo a descubrir y preservar nuestra historia.
+            </p>
+        </section>
+
+        <!-- 5. CÓMO NACIÓ -->
+        <section class="section">
+            <h2>Cómo Nació la Idea</h2>
+            <p>
+                Todo comenzó cuando nuestro equipo de estudiantes del <strong>Club de Robótica del Politécnico ITLA</strong> 
+                decidió investigar los yacimientos arqueológicos taínos de La Caleta en Boca Chica, uno de los sitios más 
+                importantes de la cultura precolombina en República Dominicana.
+            </p>
+            <p>
+                Durante nuestra investigación, descubrimos el peligro invisible que enfrentan los arqueólogos. 
+                Como jóvenes de 13-15 años, nos preguntamos: <em>"¿Cómo podemos usar la tecnología y la robótica 
+                para proteger a quienes dedican su vida a descubrir nuestro pasado?"</em>
+            </p>
+
+            <div class="timeline" style="margin-top: 3rem;">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Descubrimiento del Problema</h3>
+                        <span class="timeline-date">Septiembre 2025</span>
+                        <p>
+                            Visitamos los yacimientos arqueológicos de La Caleta y entrevistamos a arqueólogos 
+                            que nos compartieron experiencias con mareos y malestar durante excavaciones.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Investigación Científica</h3>
+                        <span class="timeline-date">Octubre 2025</span>
+                        <p>
+                            Consultamos literatura científica, hablamos con expertos en seguridad industrial 
+                            y estudiamos los efectos de gases tóxicos en espacios confinados.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Desarrollo de Prototipos</h3>
+                        <span class="timeline-date">Noviembre 2025</span>
+                        <p>
+                            Diseñamos y construimos el ArqueoBot Guard con sensores MQ-2, MQ-135 y MQ-7, 
+                            además de desarrollar el prototipo de la MaskArq Safe.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Pruebas y Validación</h3>
+                        <span class="timeline-date">Diciembre 2025</span>
+                        <p>
+                            Realizamos pruebas de campo, refinamos nuestros diseños y validamos la efectividad 
+                            de nuestras soluciones con expertos en arqueología.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Presentación FLL 2024</h3>
+                        <span class="timeline-date">Marzo 2025</span>
+                        <p>
+                            Presentamos "Guardianes del Pasado" en FIRST LEGO League, compartiendo nuestra 
+                            visión de una arqueología más segura en República Dominicana.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <p><strong>Equipo Guardianes del Pasado</strong></p>
+            <p>Club de Robótica | Politécnico ITLA</p>
+            <p>FIRST LEGO League Challenge 2024</p>
+            <p>Boca Chica, República Dominicana 🇩🇴</p>
+            <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(244, 228, 193, 0.3); font-size: 0.75rem; opacity: 0.7;">
+                © 2024 Guardianes del Pasado. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

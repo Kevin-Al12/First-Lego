@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Solución - Guardianes del Pasado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --verde-oscuro: #2d5016; --verde-medio: #6ea043; --marron-oscuro: #6b4423;
+            --crema-claro: #f4e4c1; --dorado: #e8c17c; --marron-claro: #8b6f47;
+            --texto-oscuro: #1a1a1a; --blanco: #ffffff;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--crema-claro) 0%, #fef9f0 100%);
+            color: var(--texto-oscuro); line-height: 1.5; font-size: 14px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+            padding: 0.8rem 0; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(45, 80, 22, 0.3);
+        }
+        .header-content {
+            max-width: 1100px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo h1 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); font-weight: 900;
+        }
+        .logo p { color: var(--crema-claro); font-size: 0.7rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a {
+            color: var(--crema-claro); text-decoration: none; font-weight: 500;
+            font-size: 0.85rem; transition: all 0.3s; position: relative;
+        }
+        nav a.active { color: var(--dorado); }
+        nav a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--dorado); transition: width 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        .page-hero {
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.92) 0%, rgba(110, 160, 67, 0.88) 100%);
+            padding: 4rem 1.5rem; text-align: center; color: var(--blanco);
+        }
+        .page-hero h1 {
+            font-family: 'Merriweather', serif; font-size: 3rem;
+            color: var(--dorado); margin-bottom: 0.8rem; font-weight: 900;
+        }
+        .page-hero p {
+            font-size: 1.2rem; color: var(--crema-claro); max-width: 700px; margin: 0 auto;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+        .solution-hero {
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));
+            padding: 2.5rem; border-radius: 15px; text-align: center; color: var(--blanco);
+            margin-bottom: 3rem; box-shadow: 0 6px 25px rgba(45, 80, 22, 0.2);
+        }
+        .solution-hero h2 {
+            font-family: 'Merriweather', serif; font-size: 2rem;
+            margin-bottom: 0.8rem; color: var(--dorado);
+        }
+        .solution-hero p { font-size: 1.1rem; line-height: 1.6; }
+        .solutions-grid {
+            display: grid; grid-template-columns: 1fr;
+            gap: 3.5rem; margin: 3rem 0;
+        }
+        .solution-section {
+            background: var(--blanco); border-radius: 18px; overflow: hidden;
+            box-shadow: 0 6px 25px rgba(45, 80, 22, 0.15);
+            border: 3px solid var(--verde-medio);
+        }
+        .solution-header {
+            background: linear-gradient(135deg, var(--marron-oscuro), var(--marron-claro));
+            padding: 2.5rem; text-align: center; color: var(--blanco);
+        }
+        .solution-icon {
+            font-size: 5rem; margin-bottom: 0.8rem;
+        }
+        .solution-header h3 {
+            font-family: 'Merriweather', serif; font-size: 2.5rem;
+            color: var(--dorado); margin-bottom: 0.4rem;
+        }
+        .solution-subtitle {
+            font-size: 1.2rem; color: var(--crema-claro); font-style: italic;
+        }
+        .solution-content {
+            padding: 3rem;
+        }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin-top: 1.5rem;
+        }
+        .feature-item {
+            padding: 1.5rem; background: linear-gradient(135deg, rgba(110, 160, 67, 0.05), rgba(232, 193, 124, 0.05));
+            border-radius: 12px; border-left: 4px solid var(--verde-medio);
+        }
+        .feature-item h4 {
+            font-family: 'Merriweather', serif; font-size: 1.2rem;
+            color: var(--verde-oscuro); margin-bottom: 0.8rem;
+        }
+        .feature-item p {
+            font-size: 0.9rem; line-height: 1.6;
+        }
+        .alert-system {
+            background: var(--crema-claro); padding: 2rem;
+            border-radius: 12px; margin-top: 1.5rem;
+        }
+        .alert-system h4 {
+            font-family: 'Merriweather', serif; font-size: 1.4rem;
+            color: var(--marron-oscuro); margin-bottom: 1.2rem; text-align: center;
+        }
+        .alert-levels {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1.5rem; margin-top: 1.2rem;
+        }
+        .alert-level {
+            text-align: center; padding: 1.2rem; background: var(--blanco);
+            border-radius: 12px; border: 3px solid;
+        }
+        .alert-green { border-color: #27ae60; }
+        .alert-yellow { border-color: #f39c12; }
+        .alert-red { border-color: #c0392b; }
+        .alert-level-icon {
+            font-size: 2.5rem; margin-bottom: 0.4rem;
+        }
+        .alert-level h5 {
+            font-weight: 700; margin-bottom: 0.4rem; font-size: 1rem;
+        }
+        .alert-level p {
+            font-size: 0.8rem; opacity: 0.8;
+        }
+        .tech-specs {
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--marron-oscuro));
+            padding: 3rem 1.5rem; margin: 3rem -1.5rem;
+        }
+        .tech-specs h2 {
+            font-family: 'Merriweather', serif; font-size: 2.2rem;
+            color: var(--dorado); text-align: center; margin-bottom: 2.5rem;
+        }
+        .specs-grid {
+            max-width: 900px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .spec-card {
+            background: rgba(244, 228, 193, 0.1); padding: 1.5rem;
+            border-radius: 12px; border: 2px solid var(--dorado);
+            text-align: center;
+        }
+        .spec-icon {
+            font-size: 2.5rem; margin-bottom: 0.8rem;
+        }
+        .spec-card h4 {
+            color: var(--dorado); font-size: 1.1rem; margin-bottom: 0.6rem;
+        }
+        .spec-card p {
+            color: var(--crema-claro); font-size: 0.9rem; line-height: 1.5;
+        }
+        footer {
+            background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--marron-oscuro) 100%);
+            color: var(--crema-claro); padding: 2.5rem 1.5rem 1.2rem; margin-top: 3rem;
+        }
+        .footer-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .footer-content h3 {
+            font-family: 'Merriweather', serif; font-size: 1.3rem;
+            color: var(--dorado); margin-bottom: 0.8rem; font-style: italic;
+        }
+        .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
+        @media (max-width: 768px) {
+            nav ul { flex-direction: column; gap: 0.6rem; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>GUARDIANES DEL PASADO</h1>
+                <p>Club de Robótica Politécnico ITLA</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">INICIO</a></li>
+                    <li><a href="proyecto.html">PROYECTO</a></li>
+                    <li><a href="solucion.html" class="active">SOLUCIÓN</a></li>
+                    <li><a href="mapa.html">EXPLORACIÓN</a></li>
+                    <li><a href="juego.html">JUEGO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <h1>Nuestra Solución</h1>
+        <p>Dos innovaciones tecnológicas diseñadas para salvar vidas en excavaciones arqueológicas</p>
+    </div>
+
+    <div class="container">
+        <div class="solution-hero">
+            <h2>Enfoque Integral de Seguridad</h2>
+            <p>
+                Combinamos <strong>detección preventiva con robótica autónoma</strong> y 
+                <strong>protección personal inteligente</strong> para crear un sistema completo 
+                de seguridad en excavaciones arqueológicas.
+            </p>
+        </div>
+
+        <div class="solutions-grid">
+            <div class="solution-section">
+                <div class="solution-header">
+                    <div class="solution-icon">🤖</div>
+                    <h3>ArqueoBot Guard</h3>
+                    <p class="solution-subtitle">Sistema Robótico de Detección Preventiva</p>
+                </div>
+                
+                <div class="solution-content">
+                    <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; text-align: center; color: var(--marron-oscuro);">
+                        Plataforma móvil autónoma que <strong>explora áreas arqueológicas antes del ingreso de personal</strong>, 
+                        detectando concentraciones peligrosas de gases tóxicos y alertando en tiempo real.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <h4>📡 Sensores MQ Avanzados</h4>
+                            <p>
+                                <strong>MQ-2:</strong> Detecta metano (CH₄) y humo<br>
+                                <strong>MQ-135:</strong> Monitorea CO₂ y calidad del aire<br>
+                                <strong>MQ-7:</strong> Identifica monóxido de carbono (CO)
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🚗 Movilidad Autónoma</h4>
+                            <p>
+                                Plataforma robótica controlada remotamente que navega por túneles y cavernas 
+                                sin poner en riesgo vidas humanas.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>📊 Monitoreo en Tiempo Real</h4>
+                            <p>
+                                Transmisión inalámbrica de datos a la estación base, permitiendo decisiones 
+                                inmediatas sobre la seguridad del área.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>💡 Sistema de Iluminación</h4>
+                            <p>
+                                LEDs de alta potencia para inspección visual completa de las áreas exploradas.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🔋 Batería de Larga Duración</h4>
+                            <p>
+                                Autonomía de 6+ horas para exploraciones exhaustivas sin necesidad de recarga.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🌡️ Sensores Ambientales</h4>
+                            <p>
+                                Medición de temperatura, humedad y presión atmosférica para análisis completo.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="alert-system">
+                        <h4>Sistema de Alertas Visuales y Sonoras</h4>
+                        <div class="alert-levels">
+                            <div class="alert-level alert-green">
+                                <div class="alert-level-icon">🟢</div>
+                                <h5>ZONA SEGURA</h5>
+                                <p>Niveles de gases dentro de límites seguros. Autorizado el ingreso.</p>
+                            </div>
+                            
+                            <div class="alert-level alert-yellow">
+                                <div class="alert-level-icon">🟡</div>
+                                <h5>PRECAUCIÓN</h5>
+                                <p>Gases detectados en niveles moderados. Usar MaskArq Safe obligatorio.</p>
+                            </div>
+                            
+                            <div class="alert-level alert-red">
+                                <div class="alert-level-icon">🔴</div>
+                                <h5>PELIGRO EXTREMO</h5>
+                                <p>Concentraciones letales. EVACUACIÓN INMEDIATA. Acceso prohibido.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <div class="solution-header" style="background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-medio));">
+                    <div class="solution-icon">😷</div>
+                    <h3>MaskArq Safe</h3>
+                    <p class="solution-subtitle">Protección Personal Inteligente</p>
+                </div>
+                
+                <div class="solution-content">
+                    <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; text-align: center; color: var(--marron-oscuro);">
+                        Máscara respiratoria avanzada con <strong>sistema de filtración de carbón activado</strong> 
+                        e indicadores LED que proporciona protección individual continua durante las excavaciones.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <h4>🧪 Filtración de Carbón Activado</h4>
+                            <p>
+                                Cartuchos intercambiables que eliminan gases tóxicos, partículas y compuestos orgánicos volátiles.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>💡 Indicador LED Inteligente</h4>
+                            <p>
+                                Sistema de luces que muestra en tiempo real la calidad del aire y el estado del filtro.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🏗️ Diseño Ergonómico</h4>
+                            <p>
+                                Ajuste cómodo con correas regulables, permitiendo uso prolongado sin fatiga.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🌡️ Adaptada al Clima Tropical</h4>
+                            <p>
+                                Válvulas de exhalación que reducen acumulación de calor y humedad en clima caribeño.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🔧 Mantenimiento Simple</h4>
+                            <p>
+                                Cartuchos fáciles de reemplazar, limpieza sencilla y componentes duraderos.
+                            </p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>⚡ Batería Recargable</h4>
+                            <p>
+                                Sistema LED alimentado por batería USB-C recargable de larga duración.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="alert-system" style="background: linear-gradient(135deg, rgba(110, 160, 67, 0.1), rgba(45, 80, 22, 0.1));">
+                        <h4>Estados del Indicador LED</h4>
+                        <div class="alert-levels">
+                            <div class="alert-level alert-green">
+                                <div class="alert-level-icon">💚</div>
+                                <h5>FILTRO ÓPTIMO</h5>
+                                <p>Filtro funcionando correctamente. Protección completa.</p>
+                            </div>
+                            
+                            <div class="alert-level alert-yellow">
+                                <div class="alert-level-icon">💛</div>
+                                <h5>FILTRO GASTADO</h5>
+                                <p>Reemplazar cartucho pronto. Protección reducida.</p>
+                            </div>
+                            
+                            <div class="alert-level alert-red">
+                                <div class="alert-level-icon">❤️</div>
+                                <h5>FILTRO SATURADO</h5>
+                                <p>Reemplazo urgente. Abandonar área inmediatamente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-specs">
+            <h2>Especificaciones Técnicas</h2>
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <div class="spec-icon">⚙️</div>
+                    <h4>PLATAFORMA ROBÓTICA</h4>
+                    <p>Arduino Mega 2560<br>Motor Driver L298N<br>Motores DC 12V</p>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-icon">📡</div>
+                    <h4>SENSORES</h4>
+                    <p>MQ-2, MQ-7, MQ-135<br>DHT22 (Temp/Humedad)<br>BMP280 (Presión)</p>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-icon">📶</div>
+                    <h4>COMUNICACIÓN</h4>
+                    <p>Módulo Bluetooth HC-05<br>Alcance: 10-100m<br>App móvil de monitoreo</p>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-icon">🔋</div>
+                    <h4>ENERGÍA</h4>
+                    <p>Batería Li-Po 11.1V 2200mAh<br>Autonomía: 6+ horas<br>Carga: USB-C</p>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-icon">🧪</div>
+                    <h4>FILTRACIÓN</h4>
+                    <p>Carbón activado granular<br>Eficiencia: >95%<br>Duración: 40 horas uso</p>
+                </div>
+                
+                <div class="spec-card">
+                    <div class="spec-icon">🏗️</div>
+                    <h4>MATERIALES</h4>
+                    <p>ABS impreso 3D<br>Silicona médica<br>Componentes reciclables</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>"La tecnología no solo descubre el pasado, también protege a quienes lo estudian"</h3>
+            <p><strong>Equipo Guardianes del Pasado</strong></p>
+            <p>Club de Robótica | Politécnico ITLA</p>
+            <p>FIRST LEGO League Challenge 2024</p>
+            <p>Boca Chica, República Dominicana 🇩🇴</p>
+            <div style="margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid rgba(244, 228, 193, 0.3); font-size: 0.75rem; opacity: 0.7;">
+                © 2024 Guardianes del Pasado. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
