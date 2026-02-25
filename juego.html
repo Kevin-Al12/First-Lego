@@ -31,6 +31,18 @@
             color: var(--dorado); font-weight: 900;
         }
         .logo p { color: var(--crema-claro); font-size: 0.7rem; }
+        
+        /* Menú hamburguesa para móvil */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dorado);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
         nav ul { list-style: none; display: flex; gap: 1.5rem; }
         nav a {
             color: var(--crema-claro); text-decoration: none; font-weight: 500;
@@ -231,11 +243,42 @@
         .footer-content p { font-size: 0.85rem; margin: 0.3rem 0; }
         
         @media (max-width: 768px) {
-            nav ul { 
-                flex-direction: column; 
-                gap: 0.5rem;
-                align-items: flex-start;
+            .menu-toggle { display: block; }
+            
+            nav { 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
             }
+            
+            nav.active {
+                max-height: 400px;
+            }
+            
+            nav ul { 
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+            }
+            
+            nav li {
+                border-bottom: 1px solid rgba(244, 228, 193, 0.2);
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 0.95rem;
+            }
+            
+            nav a::after { display: none; }
+            
             .page-hero h1 { font-size: 2rem; }
             .page-hero p { font-size: 1rem; }
             .game-section {
@@ -290,7 +333,8 @@
                 <h1>GUARDIANES DEL PASADO</h1>
                 <p>Club de Robótica Politécnico ITLA</p>
             </div>
-            <nav>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav id="nav-menu">
                 <ul>
                     <li><a href="index.html">INICIO</a></li>
                     <li><a href="proyecto.html">PROYECTO</a></li>
@@ -420,6 +464,20 @@
     </footer>
 
     <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('active');
+        }
+        
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav-menu').classList.remove('active');
+                }
+            });
+        });
+
         const gasCards = [
             { id: 1, emoji: '💨', name: 'CH₄', fullName: 'Metano' },
             { id: 2, emoji: '☁️', name: 'CO₂', fullName: 'Dióxido de Carbono' },
@@ -521,8 +579,8 @@
                 const victoryMsg = document.getElementById('victory-message');
                 const stats = document.getElementById('victory-stats');
                 stats.innerHTML = `
-                    <strong>⏱️ Tiempo:</strong> ${gameTime} segundos | 
-                    <strong>🔄 Movimientos:</strong> ${moves}
+                    <strong>Tiempo:</strong> ${gameTime} segundos | 
+                    <strong>Movimientos:</strong> ${moves}
                 `;
                 victoryMsg.classList.add('show');
                 victoryMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -551,5 +609,4 @@
     </script>
 </body>
 </html>
-
 
