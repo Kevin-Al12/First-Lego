@@ -66,6 +66,17 @@
             margin-top: 0.2rem;
         }
 
+        /* Menú hamburguesa para móvil */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dorado);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
         nav ul {
             list-style: none;
             display: flex;
@@ -375,6 +386,42 @@
         }
 
         @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            
+            nav { 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 100%);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            nav.active {
+                max-height: 400px;
+            }
+            
+            nav ul { 
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+            }
+            
+            nav li {
+                border-bottom: 1px solid rgba(244, 228, 193, 0.2);
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 0.95rem;
+            }
+            
+            nav a::after { display: none; }
+
             .hero h1 {
                 font-size: 2.2rem;
             }
@@ -383,17 +430,24 @@
                 font-size: 1.1rem;
             }
 
-            nav ul {
-                flex-direction: column;
-                gap: 0.6rem;
-            }
-
             .features-grid {
                 grid-template-columns: 1fr;
             }
 
             .cta-buttons {
                 flex-direction: column;
+            }
+
+            .header-content {
+                padding: 0 1.5rem;
+            }
+
+            .stats-grid {
+                padding: 0 1.5rem;
+            }
+
+            .features-section {
+                padding: 3.5rem 1.5rem;
             }
         }
     </style>
@@ -406,7 +460,8 @@
                 <h1>GUARDIANES DEL PASADO</h1>
                 <p>Club de Robótica Politécnico ITLA</p>
             </div>
-            <nav>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav id="nav-menu">
                 <ul>
                     <li><a href="index.html">INICIO</a></li>
                     <li><a href="proyecto.html">PROYECTO</a></li>
@@ -504,6 +559,23 @@
             <div class="footer-logo">© 2024 Guardianes del Pasado. Todos los derechos reservados.</div>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('active');
+        }
+        
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav-menu').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
+
